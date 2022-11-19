@@ -1,17 +1,24 @@
-Package: <package name>
-Version: <package version>
+Package: divDB
+Version: 0.0.0.9001
 Encoding: UTF-8
-Title: <edit>
+Title: Connecting and Managing taxlist/vegtable Databases
 Authors@R:
 	person("Miguel", "Alvarez", email="kamapu78@gmail.com",
 		role=c("aut","cre"), comment=c(ORCID="0000-0003-1500-1834"))
 Depends:
-	R(>= 4.0.0)
+	R(>= 4.2)
 Imports:
+    DBI,
+    RPostgres,
+    RPostgreSQL,
+    tcltk
 Suggests:
-Description: <edit>
+Description:
+    Basic functions to create, connect and handle databases in the context of
+    work with taxlist and vegtable.
 LazyData: true
 Roxygen: list(markdown = TRUE)
 License: file LICENSE
-URL: https://github.com/kamapu/<edit>
-BugReports: https://github.com/kamapu/<edit>/issues
+URL: https://github.com/kamapu/divDB
+BugReports: https://github.com/kamapu/divDB/issues
+RoxygenNote: 7.2.1

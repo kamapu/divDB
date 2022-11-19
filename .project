@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>template-r-package</name>
+	<name>divDB</name>
 	<comment>
-		A GitHub template for an R package. Edit this description an the name.
+		An R package to connect and manage databases under taxlist/vegtable
+		schemas.
 	</comment>
 	<projects>
 	</projects>
