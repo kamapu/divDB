@@ -1,5 +1,5 @@
 #' @importFrom biblio compare_df
-#' @importFrom DBI dbConnect dbDisconnect dbExistsTable dbReadTable
+#' @importFrom DBI dbConnect dbDisconnect dbExistsTable dbReadTable dbSendQuery
 #' @importFrom methods setMethod
 #' @importFrom RPostgres Postgres
 #' @importFrom tcltk tclVar tclvalue tkbind tkbutton tkdestroy tkentry tkfocus

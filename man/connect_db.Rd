@@ -15,10 +15,10 @@ connect_db(
 )
 }
 \arguments{
-\item{dbname, host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+\item{dbname, host, port}{Character values passed to \code{\link[=dbConnect]{dbConnect()}}.}
 
 \item{user, password}{Character values. They are also passed to
-\code{\link[DBI:dbConnect]{DBI::dbConnect()}} but can be alternatively inserted or modified in the
+\code{\link[=dbConnect]{dbConnect()}} but can be alternatively inserted or modified in the
 prompt.}
 
 \item{pkg}{A character value indicating the alternative package used to

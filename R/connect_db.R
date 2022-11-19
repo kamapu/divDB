@@ -6,9 +6,9 @@
 #' This function opens a prompt to insert connection details to a PostgreSQL
 #' database.
 #'
-#' @param dbname,host,port Character values passed to [DBI::dbConnect()].
+#' @param dbname,host,port Character values passed to [dbConnect()].
 #' @param user,password Character values. They are also passed to
-#'     [DBI::dbConnect()] but can be alternatively inserted or modified in the
+#'     [dbConnect()] but can be alternatively inserted or modified in the
 #'     prompt.
 #' @param pkg A character value indicating the alternative package used to
 #'     establish the connection. At the moment only `RpostgreSQL` and
