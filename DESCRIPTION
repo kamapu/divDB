@@ -8,7 +8,9 @@ Authors@R:
 Depends:
 	R(>= 4.2)
 Imports:
+    biblio,
     DBI,
+    methods,
     RPostgres,
     RPostgreSQL,
     tcltk
@@ -21,4 +23,8 @@ Roxygen: list(markdown = TRUE)
 License: file LICENSE
 URL: https://github.com/kamapu/divDB
 BugReports: https://github.com/kamapu/divDB/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
+Collate:
+    'imports.R'
+    'connect_db.R'
+    'compare_df.R'
