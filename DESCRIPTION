@@ -8,11 +8,15 @@ Authors@R:
 Depends:
 	R(>= 4.2)
 Imports:
+    biblio,
     DBI,
+    methods,
     RPostgres,
     RPostgreSQL,
     tcltk
 Suggests:
+    taxlist,
+    vegtable
 Description:
     Basic functions to create, connect and handle databases in the context of
     work with taxlist and vegtable.
@@ -21,4 +25,14 @@ Roxygen: list(markdown = TRUE)
 License: file LICENSE
 URL: https://github.com/kamapu/divDB
 BugReports: https://github.com/kamapu/divDB/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
+Collate:
+    'sql-class.R'
+    'imports.R'
+    'get_precision.R'
+    'do_backup.R'
+    'read_sql.R'
+    'connect_db.R'
+    'dbSendQuery.R'
+    'compare_df.R'
+    'update_data.R'
