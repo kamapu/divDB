@@ -21,30 +21,26 @@ reshape_updated <- function(comp, key) {
   return(Ref[Ref$updated, c(key, "vars", "new_vals")])
 }
 
+# TODO: Adapt documentation to comp_list objects
 #' @name update_data
 #'
-#' @title Compare Bibtex-files with Postgres databases and update
+#' @title Update database data by comparing with a reviewed data frame
 #'
 #' @description
-#' When changes done in the Bibtex duplicated file, they can be briefly
-#' displayed before export.
+#' Edition can be done in a data frame imported from a database table. Those
+#' editions can be then inserted in the original database table.
 #'
-#' In `update_pg` actions 'delete', 'add', and 'update' have to be accordingly
-#' set as `TRUE`, otherwise only `print_report()` will be executed.
+#' Note that you need to set the arguments `add`, `delete`, and `update` as
+#' `TRUE` to carry out the respective actions.
+#' If all `FALSE` as in the default, only a comparison will be done.
 #'
-#' @param object A connection to a reference database established by
-#'     [dbConnect()].
-#' @param revision A [lib_df-class] object imported by [read_bib()]. This data
-#'     set represent an updated version of 'object'.
+#' @param object A connection as [PostgreSQLConnection-class].
+#' @param revision A data frame with the editions for 'object'.
 #' @param key A character value indicating the name of the column used as
 #'     identifier for references.
 #' @param name Character value indicating the name of the schema in Postgres.
-#' @param delete Logical value indicating whether missing entries in 'bib' have
-#'     to be deleted in 'db'.
-#' @param add Logical value indicating whether new entries in 'bib' have to be
-#'     inserted in 'db'.
-#' @param update Logical value indicating whether entries modified in 'bib' have
-#'     to be updated in 'db'.
+#' @param add,delete,update Logical value indicating whether the respective
+#'     edition should be carried out in the database.
 #' @param ... Further arguments passed among methods. Not yet used.
 #'
 #' @rdname update_data
