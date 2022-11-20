@@ -35,3 +35,4 @@ Collate:
     'connect_db.R'
     'dbSendQuery.R'
     'compare_df.R'
+    'update_data.R'
