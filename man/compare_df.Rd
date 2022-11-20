@@ -3,9 +3,12 @@
 \name{compare_df}
 \alias{compare_df}
 \alias{compare_df,PostgreSQLConnection,data.frame,character-method}
+\alias{compare_df,list,list,list-method}
 \title{Compare database tables with data frames}
 \usage{
 \S4method{compare_df}{PostgreSQLConnection,data.frame,character}(x, y, key, name, ...)
+
+\S4method{compare_df}{list,list,list}(x, y, key, ...)
 }
 \arguments{
 \item{x}{A \linkS4class{PostgreSQLConnection} connecting to a database.}
@@ -20,6 +23,10 @@ database. This function tests the existence of the table in the database
 and returns an error message if not present.}
 
 \item{...}{Further arguments passed among methods. No yet in use.}
+}
+\value{
+Either a \linkS4class{comp_df} or a \linkS4class{comp_list} object, depending on the
+used method.
 }
 \description{
 Database tables may be exported for editing as data frames. This method
