@@ -61,15 +61,21 @@ setMethod(
     Comp_obj <- compare_df(x = object, y = revision, key = key, name = name)
     if (length(Comp_obj$added_vars) > 0) {
       warning(
-          paste0("Following added variables ",
-              "will not be handled by this method: '",
-              paste0(Comp_obj$added_vars, collapse = "', '"), "'."))
+        paste0(
+          "Following added variables ",
+          "will not be handled by this method: '",
+          paste0(Comp_obj$added_vars, collapse = "', '"), "'."
+        )
+      )
     }
     if (length(Comp_obj$deleted_vars) > 0) {
       warning(
-          paste0("Following deleted variables ",
-              "will not be handled by this method: '",
-              paste0(Comp_obj$deleted_vars, collapse = "', '"), "'."))
+        paste0(
+          "Following deleted variables ",
+          "will not be handled by this method: '",
+          paste0(Comp_obj$deleted_vars, collapse = "', '"), "'."
+        )
+      )
     }
     if (all(!c(delete, add, update))) {
       print(Comp_obj)

@@ -22,7 +22,8 @@ setMethod(
   ),
   function(conn, statement, ...) {
     for (i in seq_along(statement)) {
-      dbSendQuery(conn, statement[i])
+      x <- dbSendQuery(conn, statement[i])
     }
+    invisible(x)
   }
 )
