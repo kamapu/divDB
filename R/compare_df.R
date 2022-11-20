@@ -1,4 +1,5 @@
 #' @name compare_df
+#' @rdname compare_df
 #'
 #' @title Compare database tables with data frames
 #'
@@ -15,6 +16,10 @@
 #'     and returns an error message if not present.
 #' @param ... Further arguments passed among methods. No yet in use.
 #'
+#' @return
+#' Either a [comp_df-class] or a [comp_list-class] object, depending on the
+#' used method.
+#'
 #' @aliases compare_df,PostgreSQLConnection,data.frame,character-method
 #' @exportMethod compare_df
 setMethod(
@@ -28,5 +33,35 @@ setMethod(
     }
     x <- dbReadTable(conn = x, name = name)
     return(compare_df(x = x, y = y, key = key, ...))
+  }
+)
+
+#' @rdname compare_df
+#' @aliases compare_df,list,list,list-method
+setMethod(
+  "compare_df", signature(
+    x = "list", y = "list",
+    key = "list"
+  ),
+  function(x, y, key, ...) {
+    name <- intersect(names(key), intersect(names(x), names(y)))
+    message(paste0(
+      "Following tables will be compared: '",
+      paste0(name, collapse = "', '"), "'"
+    ))
+    OUT <- list()
+    for (i in name) {
+      if (!key[[i]] %in% intersect(names(x[[i]]), names(y[[i]]))) {
+        stop(paste0(
+          "The primary key '", key[[i]],
+          "' is missing in one or both versions of the table '", i,
+          "'"
+        ))
+      } else {
+        OUT[[i]] <- compare_df(x = x[[i]], y = y[[i]], key = key[[i]])
+      }
+    }
+    class(OUT) <- c("comp_list", "list")
+    return(OUT)
   }
 )

@@ -28,6 +28,7 @@ BugReports: https://github.com/kamapu/divDB/issues
 RoxygenNote: 7.2.2
 Collate:
     'sql-class.R'
+    'comp_list-class.R'
     'imports.R'
     'get_precision.R'
     'do_backup.R'
@@ -36,3 +37,4 @@ Collate:
     'dbSendQuery.R'
     'compare_df.R'
     'update_data.R'
+    'print-methods.R'
