@@ -3,6 +3,7 @@
 \name{update_data}
 \alias{update_data}
 \alias{update_data,PostgreSQLConnection,data.frame,character-method}
+<<<<<<< HEAD
 \title{Compare Bibtex-files with Postgres databases and update}
 \usage{
 \S4method{update_data}{PostgreSQLConnection,data.frame,character}(
@@ -45,4 +46,41 @@ displayed before export.
 
 In \code{update_pg} actions 'delete', 'add', and 'update' have to be accordingly
 set as \code{TRUE}, otherwise only \code{print_report()} will be executed.
+=======
+\title{Update database data by comparing with a reviewed data frame}
+\usage{
+\S4method{update_data}{PostgreSQLConnection,data.frame,character}(
+  object,
+  revision,
+  name,
+  key,
+  add = FALSE,
+  delete = FALSE,
+  update = FALSE,
+  ...
+)
+}
+\arguments{
+\item{object}{A connection as \linkS4class{PostgreSQLConnection}.}
+
+\item{revision}{A data frame with the editions for 'object'.}
+
+\item{name}{Character value indicating the name of the schema in Postgres.}
+
+\item{key}{A character value indicating the name of the column used as
+identifier for references.}
+
+\item{add, delete, update}{Logical value indicating whether the respective
+edition should be carried out in the database.}
+
+\item{...}{Further arguments passed among methods. Not yet used.}
+}
+\description{
+Edition can be done in a data frame imported from a database table. Those
+editions can be then inserted in the original database table.
+
+Note that you need to set the arguments \code{add}, \code{delete}, and \code{update} as
+\code{TRUE} to carry out the respective actions.
+If all \code{FALSE} as in the default, only a comparison will be done.
+>>>>>>> refs/remotes/origin/devel
 }

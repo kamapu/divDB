@@ -21,6 +21,7 @@ reshape_updated <- function(comp, key) {
   return(Ref[Ref$updated, c(key, "vars", "new_vals")])
 }
 
+<<<<<<< HEAD
 #' @name update_data
 #'
 #' @title Compare Bibtex-files with Postgres databases and update
@@ -64,6 +65,58 @@ setMethod(
     }
     Comp_obj <- compare_df(x = object, y = revision, key = key, name = name)
     Comp_obj$added_vars <- Comp_obj$deleted_vars <- character(0)
+=======
+# TODO: Adapt documentation to comp_list objects
+#' @name update_data
+#'
+#' @title Update database data by comparing with a reviewed data frame
+#'
+#' @description
+#' Edition can be done in a data frame imported from a database table. Those
+#' editions can be then inserted in the original database table.
+#'
+#' Note that you need to set the arguments `add`, `delete`, and `update` as
+#' `TRUE` to carry out the respective actions.
+#' If all `FALSE` as in the default, only a comparison will be done.
+#'
+#' @param object A connection as [PostgreSQLConnection-class].
+#' @param revision A data frame with the editions for 'object'.
+#' @param key A character value indicating the name of the column used as
+#'     identifier for references.
+#' @param name Character value indicating the name of the schema in Postgres.
+#' @param add,delete,update Logical value indicating whether the respective
+#'     edition should be carried out in the database.
+#' @param ... Further arguments passed among methods. Not yet used.
+#'
+#' @rdname update_data
+#' @aliases update_data,PostgreSQLConnection,data.frame,character-method
+#' @exportMethod update_data
+setMethod(
+  "update_data",
+  signature(
+    object = "PostgreSQLConnection", revision = "data.frame",
+    key = "character"
+  ),
+  function(object, revision, name, key, add = FALSE, delete = FALSE,
+           update = FALSE, ...) {
+    # First check existing schema and existing table
+    if (!dbExistsTable(object, name)) {
+      stop("The reference table does not exist in the database.")
+    }
+    Comp_obj <- compare_df(x = object, y = revision, key = key, name = name)
+    if (length(Comp_obj$added_vars) > 0) {
+      warning(
+          paste0("Following added variables ",
+              "will not be handled by this method: '",
+              paste0(Comp_obj$added_vars, collapse = "', '"), "'."))
+    }
+    if (length(Comp_obj$deleted_vars) > 0) {
+      warning(
+          paste0("Following deleted variables ",
+              "will not be handled by this method: '",
+              paste0(Comp_obj$deleted_vars, collapse = "', '"), "'."))
+    }
+>>>>>>> refs/remotes/origin/devel
     if (all(!c(delete, add, update))) {
       print(Comp_obj)
     } else {
