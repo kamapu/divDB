@@ -8,17 +8,27 @@
 #'
 #' @keywords internal
 reshape_updated <- function(comp, key) {
-  Ref <- data.frame(
-    idx = rep(rownames(comp$new_vals), ncol(comp$new_vals)),
-    vars = rep(names(comp$new_vals),
-      each = nrow(comp$new_vals)
-    ),
-    new_vals = unlist(comp$new_vals),
-    updated = unlist(as.data.frame(comp$updated))
-  )
-  rownames(Ref) <- NULL
-  colnames(Ref)[colnames(Ref) == "idx"] <- key
-  return(Ref[Ref$updated, c(key, "vars", "new_vals")])
+  if (nrow(comp$updated) > 0) {
+    Ref <- data.frame(
+      idx = rep(rownames(comp$new_vals), ncol(comp$new_vals)),
+      vars = rep(names(comp$new_vals),
+        each = nrow(comp$new_vals)
+      ),
+      new_vals = unlist(comp$new_vals),
+      updated = unlist(as.data.frame(comp$updated))
+    )
+    rownames(Ref) <- NULL
+    names(Ref)[names(Ref) == "idx"] <- key
+    Ref <- Ref[Ref$updated, c(key, "vars", "new_vals")]
+  } else {
+    Ref <- data.frame(
+      idx = character(0),
+      vars = character(0),
+      new_vals = character(0)
+    )
+    names(Ref)[names(Ref) == "idx"] <- key
+  }
+  return(Ref)
 }
 
 # TODO: Adapt documentation to comp_list objects
@@ -80,34 +90,30 @@ setMethod(
     if (all(!c(add, delete, update))) {
       print(Comp_obj)
     } else {
-      if (add) {
-        if (length(Comp_obj$added) > 0) {
-          dbWriteTable(
-            conn = object, name = name,
-            value = revision[
-              revision[[key]] %in% Comp_obj$added,
-              names(revision)[!names(revision) %in% Comp_obj$added_vars]
-            ],
-            append = TRUE, row.names = FALSE, overwrite = FALSE
-          )
-        }
+      if (add & length(Comp_obj$added) > 0) {
+        dbWriteTable(
+          conn = object, name = name,
+          value = revision[
+            revision[[key]] %in% Comp_obj$added,
+            names(revision)[!names(revision) %in% Comp_obj$added_vars]
+          ],
+          append = TRUE, row.names = FALSE, overwrite = FALSE
+        )
       }
-      if (delete) {
-        if (length(Comp_obj$deleted) > 0) {
-          query <- paste(
-            paste0(
-              "delete from \"",
-              paste0(name, collapse = "\".\""), "\""
-            ),
-            paste0(
-              "where \"", key, "\" in ('",
-              paste0(Comp_obj$deleted, collapse = "','"), "')"
-            )
+      if (delete & length(Comp_obj$deleted) > 0) {
+        query <- paste(
+          paste0(
+            "delete from \"",
+            paste0(name, collapse = "\".\""), "\""
+          ),
+          paste0(
+            "where \"", key, "\" in ('",
+            paste0(Comp_obj$deleted, collapse = "','"), "')"
           )
-        }
+        )
         dbSendQuery(object, query)
       }
-      if (update) {
+      if (update & nrow(Comp_obj$updated) > 0) {
         ref_tab <- reshape_updated(Comp_obj, key)
         for (i in 1:nrow(ref_tab)) {
           query <- paste(
