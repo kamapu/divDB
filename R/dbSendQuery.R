@@ -23,8 +23,14 @@ setMethod(
   function(conn, statement, ...) {
     for (i in seq_along(statement)) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       dbSendQuery(conn, statement[i])
     }
+=======
+      x <- dbSendQuery(conn, statement[i])
+    }
+    return(x)
+>>>>>>> refs/remotes/origin/devel
 =======
       x <- dbSendQuery(conn, statement[i])
     }

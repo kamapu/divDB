@@ -8,6 +8,10 @@ export(get_precision)
 export(read_sql)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+exportClasses(comp_list)
+>>>>>>> refs/remotes/origin/devel
 =======
 exportClasses(comp_list)
 >>>>>>> refs/remotes/origin/devel
