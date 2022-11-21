@@ -29,6 +29,7 @@ RoxygenNote: 7.2.2
 Collate:
     'sql-class.R'
 <<<<<<< HEAD
+<<<<<<< HEAD
     'imports.R'
     'get_precision.R'
     'do_backup.R'
@@ -37,6 +38,18 @@ Collate:
     'dbSendQuery.R'
     'compare_df.R'
     'update_data.R'
+=======
+    'comp_list-class.R'
+    'imports.R'
+    'get_precision.R'
+    'do_backup.R'
+    'read_sql.R'
+    'connect_db.R'
+    'dbSendQuery.R'
+    'compare_df.R'
+    'update_data.R'
+    'print-methods.R'
+>>>>>>> refs/remotes/origin/devel
 =======
     'comp_list-class.R'
     'imports.R'

@@ -4,6 +4,7 @@
 \alias{compare_df}
 \alias{compare_df,PostgreSQLConnection,data.frame,character-method}
 <<<<<<< HEAD
+<<<<<<< HEAD
 \title{Compare database tables with data frames}
 \usage{
 \S4method{compare_df}{PostgreSQLConnection,data.frame,character}(x, y, key, name, ...)
@@ -21,6 +22,32 @@ database. This function tests the existence of the table in the database
 and returns an error message if not present.}
 
 \item{...}{Further arguments passed among methods. No yet in use.}
+=======
+\alias{compare_df,list,list,list-method}
+\title{Compare database tables with data frames}
+\usage{
+\S4method{compare_df}{PostgreSQLConnection,data.frame,character}(x, y, key, name, ...)
+
+\S4method{compare_df}{list,list,list}(x, y, key, ...)
+}
+\arguments{
+\item{x}{A \linkS4class{PostgreSQLConnection} connecting to a database.}
+
+\item{y}{A data frame including the reviewed version of the table.}
+
+\item{key}{A character value indicating the name of the primary key in the
+tables.}
+
+\item{name}{A character vector with the name of the schema and table in the
+database. This function tests the existence of the table in the database
+and returns an error message if not present.}
+
+\item{...}{Further arguments passed among methods. No yet in use.}
+}
+\value{
+Either a \linkS4class{comp_df} or a \linkS4class{comp_list} object, depending on the
+used method.
+>>>>>>> refs/remotes/origin/devel
 =======
 \alias{compare_df,list,list,list-method}
 \title{Compare database tables with data frames}
