@@ -52,7 +52,7 @@ setMethod(
     object = "PostgreSQLConnection", revision = "data.frame",
     key = "character"
   ),
-  function(object, revision, name, key, add = FALSE, delete = FALSE,
+  function(object, revision, key, name, add = FALSE, delete = FALSE,
            update = FALSE, ...) {
     # First check existing schema and existing table
     if (!dbExistsTable(object, name)) {
@@ -77,14 +77,17 @@ setMethod(
         )
       )
     }
-    if (all(!c(delete, add, update))) {
+    if (all(!c(add, delete, update))) {
       print(Comp_obj)
     } else {
       if (add) {
         if (length(Comp_obj$added) > 0) {
           dbWriteTable(
             conn = object, name = name,
-            value = revision[revision[[key]] %in% Comp_obj$added, ],
+            value = revision[
+              revision[[key]] %in% Comp_obj$added,
+              names(revision)[!names(revision) %in% Comp_obj$added_vars]
+            ],
             append = TRUE, row.names = FALSE, overwrite = FALSE
           )
         }

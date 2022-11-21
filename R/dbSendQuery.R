@@ -24,6 +24,6 @@ setMethod(
     for (i in seq_along(statement)) {
       x <- dbSendQuery(conn, statement[i])
     }
-    invisible(x)
+    return(x)
   }
 )

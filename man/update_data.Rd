@@ -8,8 +8,8 @@
 \S4method{update_data}{PostgreSQLConnection,data.frame,character}(
   object,
   revision,
-  name,
   key,
+  name,
   add = FALSE,
   delete = FALSE,
   update = FALSE,
@@ -21,10 +21,10 @@
 
 \item{revision}{A data frame with the editions for 'object'.}
 
-\item{name}{Character value indicating the name of the schema in Postgres.}
-
 \item{key}{A character value indicating the name of the column used as
 identifier for references.}
+
+\item{name}{Character value indicating the name of the schema in Postgres.}
 
 \item{add, delete, update}{Logical value indicating whether the respective
 edition should be carried out in the database.}
