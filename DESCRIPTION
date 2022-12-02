@@ -13,7 +13,8 @@ Imports:
     methods,
     RPostgres,
     RPostgreSQL,
-    tcltk
+    tcltk,
+    tools
 Suggests:
     taxlist,
     vegtable

@@ -115,6 +115,7 @@ setMethod(
       }
       if (update & nrow(Comp_obj$updated) > 0) {
         ref_tab <- reshape_updated(Comp_obj, key)
+        ref_tab$new_vals <- gsub("'", "''", ref_tab$new_vals, fixed = TRUE)
         for (i in 1:nrow(ref_tab)) {
           query <- paste(
             paste0(
