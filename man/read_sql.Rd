@@ -2,13 +2,15 @@
 % Please edit documentation in R/read_sql.R
 \name{read_sql}
 \alias{read_sql}
+\alias{write_sql}
 \title{Read SQL scripts and split it in SQL statements}
 \usage{
 read_sql(file, end = ";", comment = "--", ...)
+
+write_sql(sql, file, ...)
 }
 \arguments{
-\item{file}{A character value indicating the path to the script that have to
-be read.}
+\item{file}{A character value indicating the path to the sql file.}
 
 \item{end}{Symbol set at the end of a statement (semicolon by default).}
 
@@ -16,6 +18,8 @@ be read.}
 default).}
 
 \item{...}{Further arguments passed to \code{\link[=readLines]{readLines()}}.}
+
+\item{sql}{A \linkS4class{sql} object containing queries.}
 }
 \value{
 A \linkS4class{sql} object.

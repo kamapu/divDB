@@ -10,6 +10,7 @@
 #' @param x An object of class [comp_list-class].
 #' @param ... Further arguments passed among methods.
 #'
+#' @aliases print,comp_list-method
 #' @method print comp_list
 #' @export
 print.comp_list <- function(x, ...) {
@@ -20,4 +21,18 @@ print.comp_list <- function(x, ...) {
     print(x[[i]])
   }
   cat("\n")
+}
+
+#' @rdname print
+#' @aliases print,sql-method
+#' @method print sql
+#' @export
+print.sql <- function(x, ...) {
+  suffix <- c("\n\n", ";\n\n")[match(
+    grepl(";", x, fixed = TRUE),
+    c(TRUE, FALSE)
+  )]
+  for (i in seq_along(x)) {
+    cat(paste0(x[i], suffix[i]))
+  }
 }

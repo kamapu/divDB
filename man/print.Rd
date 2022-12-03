@@ -4,9 +4,14 @@
 \name{print-methods}
 \alias{print-methods}
 \alias{print.comp_list}
+\alias{print,comp_list-method}
+\alias{print.sql}
+\alias{print,sql-method}
 \title{Print methods}
 \usage{
 \method{print}{comp_list}(x, ...)
+
+\method{print}{sql}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{comp_list}.}
