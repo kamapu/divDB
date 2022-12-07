@@ -48,7 +48,8 @@ reshape_updated <- function(comp, key) {
 #' @param revision A data frame with the editions for 'object'.
 #' @param key A character value indicating the name of the column used as
 #'     identifier for references.
-#' @param name Character value indicating the name of the schema in Postgres.
+#' @param name Character vector with two values indicating the name of the
+#'     schema and the name of the table in Postgres, respectively.
 #' @param add,delete,update Logical value indicating whether the respective
 #'     edition should be carried out in the database.
 #' @param ... Further arguments passed among methods. Not yet used.

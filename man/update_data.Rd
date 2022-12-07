@@ -24,7 +24,8 @@
 \item{key}{A character value indicating the name of the column used as
 identifier for references.}
 
-\item{name}{Character value indicating the name of the schema in Postgres.}
+\item{name}{Character vector with two values indicating the name of the
+schema and the name of the table in Postgres, respectively.}
 
 \item{add, delete, update}{Logical value indicating whether the respective
 edition should be carried out in the database.}

@@ -39,3 +39,4 @@ Collate:
     'compare_df.R'
     'update_data.R'
     'print-methods.R'
+    'add_columns.R'
