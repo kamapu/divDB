@@ -7,9 +7,8 @@
 #' database.
 #'
 #' @param dbname,host,port Character values passed to [dbConnect()].
-#' @param user,password Character values. They are also passed to
-#'     [dbConnect()] but can be alternatively inserted or modified in the
-#'     prompt.
+#' @param user,password Character values. They are passed to [dbConnect()].
+#'     If not provided, they will be prompted by [credentials()].
 #' @param pkg A character value indicating the alternative package used to
 #'     establish the connection. At the moment only `RpostgreSQL` and
 #'     `RPostgres` are suitable.
@@ -30,37 +29,12 @@
 #' @export
 connect_db <- function(dbname = "", host = "localhost", port = "5432",
                        user = "", password = "", pkg = "RPostgreSQL", ...) {
-  # Top level
-  tt <- tktoplevel()
-  tkwm.title(tt, "Connect Database")
-  # Preset values
-  User <- tclVar(user)
-  Password <- tclVar(password)
-  # Labels
-  label_User <- tklabel(tt, text = "User:")
-  label_Password <- tklabel(tt, text = "Password:")
-  # Boxes
-  entry_User <- tkentry(tt, width = "20", textvariable = User)
-  entry_Password <- tkentry(tt,
-    width = "20", show = "*",
-    textvariable = Password
-  )
-  # The grid
-  # tkgrid(tklabel(tt, text="Enter your login details"))
-  tkgrid(label_User, entry_User)
-  tkgrid(label_Password, entry_Password)
-  # Nicier arrangements
-  tkgrid.configure(entry_User, entry_Password, sticky = "w")
-  tkgrid.configure(label_User, label_Password, sticky = "e")
-  # Actions
-  OnOK <- function() {
-    tkdestroy(tt)
+  # Get credentials (only if not provided)
+  if (user == "" | password == "") {
+    cred <- credentials(user = user, password = password)
+    user <- unname(cred["user"])
+    password <- unname(cred["password"])
   }
-  OK_but <- tkbutton(tt, text = " OK ", command = OnOK)
-  tkbind(entry_Password, "<Return>", OnOK)
-  tkgrid(OK_but)
-  tkfocus(tt)
-  tkwait.window(tt)
   # Connection
   pkg_opts <- c("RPostgreSQL", "RPostgres")
   pkg <- pmatch(pkg, pkg_opts)
@@ -74,14 +48,14 @@ connect_db <- function(dbname = "", host = "localhost", port = "5432",
   if (pkg == 1) {
     return(dbConnect(
       drv = "PostgreSQL", dbname = dbname, host = host,
-      port = port, user = tclvalue(User), password = tclvalue(Password),
+      port = port, user = user, password = password,
       ...
     ))
   }
   if (pkg == 2) {
     return(dbConnect(
       drv = Postgres(), dbname = dbname, host = host,
-      port = port, password = tclvalue(Password), user = tclvalue(User),
+      port = port, user = user, password = password,
       ...
     ))
   }

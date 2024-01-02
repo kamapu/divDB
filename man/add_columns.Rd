@@ -13,6 +13,8 @@ add_columns(conn, ...)
 \arguments{
 \item{conn}{A \linkS4class{PostgreSQLConnection} connection to a database.}
 
+\item{...}{Further arguments passed among methods.}
+
 \item{df}{A data frame with definitions for new columns. The mandatory
 columns are \strong{name}, \strong{type} (the type of new columns, including
 constraints), and \strong{comment} (comments added to the columns).}
