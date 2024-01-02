@@ -58,7 +58,10 @@ do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
   label_Password <- tklabel(tt, text = "Password:")
   # Boxes
   entry_User <- tkentry(tt, width = "20", textvariable = User)
-  entry_Password <- tkentry(tt, width = "20", show = "*", textvariable = Password)
+  entry_Password <- tkentry(tt,
+    width = "20", show = "*",
+    textvariable = Password
+  )
   # The grid
   tkgrid(label_User, entry_User)
   tkgrid(label_Password, entry_Password)
@@ -142,9 +145,11 @@ do_restore <- function(dbname = "", backup, host = "localhost", port = "5432",
   tkwait.window(tt)
   # Create command
   if (missing(backup)) {
-    backup <- taxlist:::sort_backups(
-      file = file.path(filepath, filename),
-      f_timestamp = f_timestamp, fext = fext
+    backup <- sort_backups(
+      name = filename,
+      path = filepath,
+      date_format = f_timestamp,
+      fext = fext
     )
     backup <- backup$filename[nrow(backup)]
   }
