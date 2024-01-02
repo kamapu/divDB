@@ -15,3 +15,4 @@ conn <- connect_db(dbname = "test-db", user = "miguel2", password = "pw")
 conn <- connect_db(dbname = "test-db", user = "miguel", pkg = "RPostgres")
 conn <- connect_db(dbname = "test-db", user = "miguel2", password = "pw",
     pkg = "RPostgres")
+
