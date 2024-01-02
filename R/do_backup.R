@@ -41,42 +41,17 @@
 #'
 #' @author Miguel Alvarez
 #'
-#' @export do_backup
-#'
+#' @export
 do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
-                      password = "", filepath = getwd(), filename = dbname,
+                      password = "", filepath = ".", filename = dbname,
                       fext = ".backup", path_psql = "/usr/bin",
                       f_timestamp = "%Y%m%d", ...) {
-  # Top level
-  tt <- tktoplevel()
-  tkwm.title(tt, "Log in")
-  # Preset values
-  User <- tclVar(user)
-  Password <- tclVar(password)
-  # Labels
-  label_User <- tklabel(tt, text = "User-ID:")
-  label_Password <- tklabel(tt, text = "Password:")
-  # Boxes
-  entry_User <- tkentry(tt, width = "20", textvariable = User)
-  entry_Password <- tkentry(tt,
-    width = "20", show = "*",
-    textvariable = Password
-  )
-  # The grid
-  tkgrid(label_User, entry_User)
-  tkgrid(label_Password, entry_Password)
-  # Nicier arrangements
-  tkgrid.configure(entry_User, entry_Password, sticky = "w")
-  tkgrid.configure(label_User, label_Password, sticky = "e")
-  # Actions
-  OnOK <- function() {
-    tkdestroy(tt)
+  # Get credentials (only if not provided)
+  if (user == "" | password == "") {
+    cred <- credentials(user = user, password = password)
+    user <- unname(cred["user"])
+    password <- unname(cred["password"])
   }
-  OK_but <- tkbutton(tt, text = " OK ", command = OnOK)
-  tkbind(entry_Password, "<Return>", OnOK)
-  tkgrid(OK_but)
-  tkfocus(tt)
-  tkwait.window(tt)
   # Prepare the file
   old_file <- file.path(filepath, sub(fext, "", list.files(
     path = filepath,
@@ -93,10 +68,10 @@ do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
   # Create command
   system(paste(
     paste0(
-      "PGPASSWORD=\"", tclvalue(Password), "\""
+      "PGPASSWORD=\"", password, "\""
     ),
     file.path(path_psql, "pg_dump"),
-    "-U", tclvalue(User),
+    "-U", user,
     "-h", host,
     "-p", port,
     "-F c", dbname, ">", new_file
@@ -104,45 +79,20 @@ do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
   message(paste0("\nDatabase '", dbname, "' backed up in '", new_file, "'"))
 }
 
-
 #' @rdname do_backup
-#'
 #' @aliases do_restore
-#'
-#' @export do_restore
-#'
+#' @export
 do_restore <- function(dbname = "", backup, host = "localhost", port = "5432",
-                       user = "", password = "", filepath = getwd(),
+                       user = "", password = "", filepath = ".",
                        filename = dbname, fext = ".backup",
                        path_psql = "/usr/bin", f_timestamp = "%Y%m%d",
                        opts = "--clean", ...) {
-  # Top level
-  tt <- tktoplevel()
-  tkwm.title(tt, "Log in")
-  # Preset values
-  User <- tclVar(user)
-  Password <- tclVar(password)
-  # Labels
-  label_User <- tklabel(tt, text = "User-ID:")
-  label_Password <- tklabel(tt, text = "Password:")
-  # Boxes
-  entry_User <- tkentry(tt, width = "20", textvariable = User)
-  entry_Password <- tkentry(tt, width = "20", show = "*", textvariable = Password)
-  # The grid
-  tkgrid(label_User, entry_User)
-  tkgrid(label_Password, entry_Password)
-  # Nicier arrangements
-  tkgrid.configure(entry_User, entry_Password, sticky = "w")
-  tkgrid.configure(label_User, label_Password, sticky = "e")
-  # Actions
-  OnOK <- function() {
-    tkdestroy(tt)
+  # Get credentials (only if not provided)
+  if (user == "" | password == "") {
+    cred <- credentials(user = user, password = password)
+    user <- unname(cred["user"])
+    password <- unname(cred["password"])
   }
-  OK_but <- tkbutton(tt, text = " OK ", command = OnOK)
-  tkbind(entry_Password, "<Return>", OnOK)
-  tkgrid(OK_but)
-  tkfocus(tt)
-  tkwait.window(tt)
   # Create command
   if (missing(backup)) {
     backup <- sort_backups(
@@ -154,11 +104,11 @@ do_restore <- function(dbname = "", backup, host = "localhost", port = "5432",
     backup <- backup$filename[nrow(backup)]
   }
   system(paste(
-    paste0("PGPASSWORD=\"", tclvalue(Password), "\""),
+    paste0("PGPASSWORD=\"", password, "\""),
     file.path(path_psql, "pg_restore"),
     "-h", host,
     "-p", port,
-    "-U", tclvalue(User),
+    "-U", user,
     opts,
     "-d", dbname,
     "-v", file.path(filepath, backup)

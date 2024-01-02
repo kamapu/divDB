@@ -17,9 +17,8 @@ connect_db(
 \arguments{
 \item{dbname, host, port}{Character values passed to \code{\link[=dbConnect]{dbConnect()}}.}
 
-\item{user, password}{Character values. They are also passed to
-\code{\link[=dbConnect]{dbConnect()}} but can be alternatively inserted or modified in the
-prompt.}
+\item{user, password}{Character values. They are passed to \code{\link[=dbConnect]{dbConnect()}}.
+If not provided, they will be prompted by \code{\link[=credentials]{credentials()}}.}
 
 \item{pkg}{A character value indicating the alternative package used to
 establish the connection. At the moment only \code{RpostgreSQL} and

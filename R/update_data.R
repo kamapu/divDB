@@ -31,7 +31,6 @@ reshape_updated <- function(comp, key) {
   return(Ref)
 }
 
-# TODO: Adapt documentation to comp_list objects
 #' @name update_data
 #'
 #' @title Update database data by comparing with a reviewed data frame
