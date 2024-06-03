@@ -1,12 +1,17 @@
 #' @name do_character
 #' @rdname do_character
-#' 
+#'
 #' @title Convert verctors to characters for building queries
-#' 
-#' @description 
+#'
+#' @description
 #' To make it easier to build queries, variables and data frames are converted
 #' to character values.
-#' 
+#'
+#' @param x A vector or data frame to be converted.
+#' @param ... Further arguments passed among methods.
+#'
+#' @example examples/do_character.R
+#'
 #' @export
 do_character <- function(x, ...) {
   UseMethod("do_character", x)
@@ -67,7 +72,8 @@ do_character.Date <- function(x, ...) {
 #' @method do_character data.frame
 #' @export
 do_character.data.frame <- function(x, ...) {
-  for (i in names(x))
+  for (i in names(x)) {
     x[[i]] <- do_character(x[[i]])
+  }
   return(x)
 }
