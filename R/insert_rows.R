@@ -3,8 +3,8 @@
 #' @title Insert new rows in database tables.
 #'
 #' @description
-#' Database tables may be exported for editing as data frames. This method
-#' allows for comparing editions done in data frame.
+#' New rows can be inserted from data frames into a Postgres table.
+#' This function will first construct the sql commands to do the insert.
 #'
 #' @param x A [PostgreSQLConnection-class] connecting to a database.
 #' @param y A data frame including the reviewed version of the table.
