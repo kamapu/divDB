@@ -42,3 +42,4 @@ Collate:
     'print-methods.R'
     'add_columns.R'
     'do_character.R'
+    'insert_rows.R'
