@@ -26,6 +26,6 @@ scripts for further execution.}
 An invisible \linkS4class{sql} object.
 }
 \description{
-Database tables may be exported for editing as data frames. This method
-allows for comparing editions done in data frame.
+New rows can be inserted from data frames into a Postgres table.
+This function will first construct the sql commands to do the insert.
 }

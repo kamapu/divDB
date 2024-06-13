@@ -22,7 +22,9 @@ do_character <- function(x, ...) {
 #' @method do_character character
 #' @export
 do_character.character <- function(x, ...) {
+  idx <- is.na(x)
   x <- paste0("\'", x, "\'")
+  x[idx] <- "null"
   return(x)
 }
 
@@ -32,6 +34,7 @@ do_character.character <- function(x, ...) {
 #' @export
 do_character.numeric <- function(x, ...) {
   x <- as.character(x)
+  x[is.na(x)] <- "null"
   return(x)
 }
 
@@ -51,6 +54,7 @@ do_character.factor <- function(x, ...) {
 #' @export
 do_character.logical <- function(x, ...) {
   x <- as.character(x)
+  x[is.na(x)] <- "null"
   x <- tolower(x)
   return(x)
 }
