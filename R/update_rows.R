@@ -37,6 +37,15 @@ setGeneric(
 setMethod(
   "update_rows", signature(x = "PostgreSQLConnection", y = "data.frame"),
   function(x, y, name, key, eval = TRUE, ...) {
+    # Check for NAs in key columns
+    for (i in key) {
+      if (any(is.na(y[[i]]))) {
+        stop(paste0(
+          "NA values are not allowed in key column '", i,
+          "' at 'y'"
+        ))
+      }
+    }
     # Test if the key is unique
     if (any(duplicated(y[key]))) {
       stop("'y' contains duplicated entries for the key values.")
@@ -73,7 +82,7 @@ setMethod(
       paste0("set ", apply(y[!names(y) %in% key], 1, paste0,
         collapse = ", "
       ), "\n"),
-      paste0("where ", apply(y[key], 1, paste, collapse = "and")), ";"
+      paste0("where ", apply(y[key], 1, paste, collapse = " and ")), ";"
     )
     class(query) <- c("sql", "character")
     # Run query, if requested
