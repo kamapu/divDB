@@ -43,3 +43,4 @@ Collate:
     'add_columns.R'
     'do_character.R'
     'insert_rows.R'
+    'update_rows.R'

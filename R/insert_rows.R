@@ -27,7 +27,7 @@ setMethod(
   ),
   function(x, y, name, eval = TRUE, ...) {
     if (!dbExistsTable(x, name)) {
-      stop("The reference table does not exist in the database.")
+      stop("The target table does not exist in the database.")
     }
     db_col_names <- unlist(dbGetQuery(x, paste(
       "select column_name",
