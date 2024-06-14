@@ -1,5 +1,5 @@
 Package: divDB
-Version: 0.0.3
+Version: 0.0.4
 Encoding: UTF-8
 Title: Connecting and Managing taxlist/vegtable Databases
 Authors@R:
@@ -43,3 +43,4 @@ Collate:
     'add_columns.R'
     'do_character.R'
     'insert_rows.R'
+    'update_rows.R'
