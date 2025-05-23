@@ -90,6 +90,9 @@ setMethod(
     if (all(!c(add, delete, update))) {
       print(Comp_obj)
     } else {
+      query <- character(0)
+
+      # Use insert rows
       if (add & length(Comp_obj$added) > 0) {
         dbWriteTable(
           conn = object, name = name,
@@ -100,8 +103,10 @@ setMethod(
           append = TRUE, row.names = FALSE, overwrite = FALSE
         )
       }
+      # ---------
+
       if (delete & length(Comp_obj$deleted) > 0) {
-        query <- paste(
+        query <- c(query, paste(
           paste0(
             "delete from \"",
             paste0(name, collapse = "\".\""), "\""
@@ -110,14 +115,13 @@ setMethod(
             "where \"", key, "\" in ('",
             paste0(Comp_obj$deleted, collapse = "','"), "')"
           )
-        )
-        dbSendQuery(object, query)
+        ))
       }
       if (update & nrow(Comp_obj$updated) > 0) {
         ref_tab <- reshape_updated(Comp_obj, key)
         ref_tab$new_vals <- gsub("'", "''", ref_tab$new_vals, fixed = TRUE)
         for (i in 1:nrow(ref_tab)) {
-          query <- paste(
+          query <- c(query, paste(
             paste0(
               "update \"",
               paste0(name, collapse = "\".\""), "\""
@@ -127,8 +131,7 @@ setMethod(
               ref_tab$new_vals[i], "'"
             ),
             paste0("where \"", key, "\" = '", ref_tab[[key]][i], "'")
-          )
-          dbSendQuery(object, query)
+          ))
         }
       }
     }
