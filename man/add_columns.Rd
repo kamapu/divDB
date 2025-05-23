@@ -8,7 +8,7 @@
 \usage{
 add_columns(conn, ...)
 
-\method{add_columns}{PostgreSQLConnection}(conn, df, name, ...)
+\method{add_columns}{PostgreSQLConnection}(conn, df, name, eval = TRUE, ...)
 }
 \arguments{
 \item{conn}{A \linkS4class{PostgreSQLConnection} connection to a database.}
@@ -21,6 +21,13 @@ constraints), and \strong{comment} (comments added to the columns).}
 
 \item{name}{A character vector with the name of the schema and the table,
 where the new columns have to be added.}
+
+\item{eval}{A logical value, whether the resulting SQL commands should be
+executed or not. This may be usefull if the target is retrieving SQL
+scripts for further execution.}
+}
+\value{
+An invisible \linkS4class{sql} object.
 }
 \description{
 For convenience new columns can be listed in a data frame including type

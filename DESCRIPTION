@@ -1,5 +1,5 @@
 Package: divDB
-Version: 0.1.1
+Version: 0.1.2
 Encoding: UTF-8
 Title: Connecting and Managing taxlist/vegtable Databases
 Authors@R:
@@ -26,7 +26,7 @@ Roxygen: list(markdown = TRUE)
 License: file LICENSE
 URL: https://github.com/kamapu/divDB
 BugReports: https://github.com/kamapu/divDB/issues
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Collate:
 	'credentials.R'
     'sql-class.R'

@@ -13,7 +13,13 @@
 #'     constraints), and **comment** (comments added to the columns).
 #' @param name A character vector with the name of the schema and the table,
 #'     where the new columns have to be added.
+#' @param eval A logical value, whether the resulting SQL commands should be
+#'     executed or not. This may be usefull if the target is retrieving SQL
+#'     scripts for further execution.
 #' @param ... Further arguments passed among methods.
+#'
+#' @return
+#' An invisible [sql-class] object.
 #'
 #' @export
 add_columns <- function(conn, ...) {
@@ -24,7 +30,7 @@ add_columns <- function(conn, ...) {
 #' @aliases add_columns,PostgreSQLConnection-method
 #' @method add_columns PostgreSQLConnection
 #' @export
-add_columns.PostgreSQLConnection <- function(conn, df, name, ...) {
+add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
   name_cols <- c("name", "type", "comment")
   name_cols <- name_cols[!name_cols %in% names(df)]
   if (length(name_cols) > 0) {
@@ -47,5 +53,11 @@ add_columns.PostgreSQLConnection <- function(conn, df, name, ...) {
     )
   )
   class(query) <- c("sql", "character")
-  dbSendQuery(conn, query)
+  # Evaluate, if requested
+  if (eval) {
+    dbSendQuery(conn, query)
+    message("DONE!")
+  }
+  # Return invisible sql
+  invisible(query)
 }
