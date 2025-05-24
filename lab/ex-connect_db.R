@@ -1,8 +1,3 @@
-# TODO:   Add comment
-# 
-# Author: Miguel Alvarez
-################################################################################
-
 library(divDB)
 
 # Credentials prompted

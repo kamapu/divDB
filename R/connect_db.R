@@ -6,16 +6,16 @@
 #' This function opens a prompt to insert connection details to a PostgreSQL
 #' database.
 #'
-#' @param dbname,host,port Character values passed to [dbConnect()].
-#' @param user,password Character values. They are passed to [dbConnect()].
+#' @param dbname,host,port Character values passed to [DBI::dbConnect()].
+#' @param user,password Character values. They are passed to [DBI::dbConnect()].
 #'     If not provided, they will be prompted by [credentials()].
 #' @param pkg A character value indicating the alternative package used to
 #'     establish the connection. At the moment only `RpostgreSQL` and
 #'     `RPostgres` are suitable.
-#' @param ... Further arguments passed to [dbConnect()].
+#' @param ... Further arguments passed to [DBI::dbConnect()].
 #'
 #' @return
-#' A connection as [PostgreSQLConnection-class].
+#' A connection as [RPostgreSQL::PostgreSQLConnection-class].
 #'
 #' @references
 #' http://r.789695.n4.nabble.com/tkentry-that-exits-after-RETURN-tt854721.html#none

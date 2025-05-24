@@ -7,7 +7,7 @@ library(divDB)
 library(RPostgres)
 
 cred <- credentials()
-db_name <- "vegetation-db"
+db_name <- "postgres"
 
 conn <- connect_db(db_name, user = cred["user"], password = cred["password"])
 
@@ -31,8 +31,13 @@ names(iris_df) <- c("sepal_length", "sepal_width", "petal_length",
     "petal_width", "species")
 
 # Insert only data from Iris setosa
-insert_rows(conn, subset(iris_df, species == "setosa"),
+query <- insert_rows(conn, subset(iris_df, species == "setosa"),
     c("data_frames", "iris"))
+
+
+
+
+
 
 # Retrieve the data from database
 iris_db <- dbGetQuery(conn, "select * from data_frames.iris")

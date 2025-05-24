@@ -8,7 +8,8 @@
 \S4method{insert_rows}{PostgreSQLConnection,data.frame}(x, y, name, eval = TRUE, ...)
 }
 \arguments{
-\item{x}{A \linkS4class{PostgreSQLConnection} connecting to a database.}
+\item{x}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} connecting to a
+database.}
 
 \item{y}{A data frame including the reviewed version of the table.}
 

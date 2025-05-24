@@ -1,7 +1,7 @@
 #' @name do_character
 #' @rdname do_character
 #'
-#' @title Convert verctors to characters for building queries
+#' @title Convert vectors to characters for building queries
 #'
 #' @description
 #' To make it easier to build queries, variables and data frames are converted

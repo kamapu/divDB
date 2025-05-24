@@ -4,7 +4,8 @@
 #' @description
 #' Ease the update of modified tables usind SQL and loops
 #'
-#' @param comp A object of class [comp_df-class] resulted from [compare_df()].
+#' @param comp A object of class [biblio::comp_df-class] resulted from
+#'     [compare_df()].
 #'
 #' @keywords internal
 reshape_updated <- function(comp, key) {
@@ -43,18 +44,27 @@ reshape_updated <- function(comp, key) {
 #' `TRUE` to carry out the respective actions.
 #' If all `FALSE` as in the default, only a comparison will be done.
 #'
-#' @param object A connection as [PostgreSQLConnection-class].
+#' @param object A connection as [RPostgreSQL::PostgreSQLConnection-class].
 #' @param revision A data frame with the editions for 'object'.
 #' @param key A character value indicating the name of the column used as
 #'     identifier for references.
 #' @param name Character vector with two values indicating the name of the
 #'     schema and the name of the table in Postgres, respectively.
+#' @param eval A logical value, whether the resulting SQL commands should be
+#'     executed or not. This may be usefull if the target is retrieving SQL
+#'     scripts for further execution.
 #' @param add,delete,update Logical value indicating whether the respective
 #'     edition should be carried out in the database.
 #' @param ... Further arguments passed among methods. Not yet used.
 #'
 #' @rdname update_data
 #' @aliases update_data,PostgreSQLConnection,data.frame,character-method
+#'
+#' @return
+#' If all of add, delete and update are FALSE, this function returns an object
+#' of class [biblio::comp_df-class].
+#' Otherwise, it returns an invisible [sql-class] object.
+#'
 #' @exportMethod update_data
 setMethod(
   "update_data",
@@ -62,14 +72,14 @@ setMethod(
     object = "PostgreSQLConnection", revision = "data.frame",
     key = "character"
   ),
-  function(object, revision, key, name, add = FALSE, delete = FALSE,
-           update = FALSE, ...) {
+  function(object, revision, key, name, eval = TRUE, add = FALSE,
+           delete = FALSE, update = FALSE, ...) {
     # First check existing schema and existing table
     if (!dbExistsTable(object, name)) {
       stop("The reference table does not exist in the database.")
     }
-    Comp_obj <- compare_df(x = object, y = revision, key = key, name = name)
-    if (length(Comp_obj$added_vars) > 0) {
+    Comp_obj <- compare_df(object, revision, key, name)
+    if (length(Comp_obj$added_vars)) {
       warning(
         paste0(
           "Following added variables ",
@@ -78,7 +88,7 @@ setMethod(
         )
       )
     }
-    if (length(Comp_obj$deleted_vars) > 0) {
+    if (length(Comp_obj$deleted_vars)) {
       warning(
         paste0(
           "Following deleted variables ",
@@ -88,20 +98,18 @@ setMethod(
       )
     }
     if (all(!c(add, delete, update))) {
-      print(Comp_obj)
+      return(Comp_obj)
     } else {
-      if (add & length(Comp_obj$added) > 0) {
-        dbWriteTable(
-          conn = object, name = name,
-          value = revision[
-            revision[[key]] %in% Comp_obj$added,
-            names(revision)[!names(revision) %in% Comp_obj$added_vars]
-          ],
-          append = TRUE, row.names = FALSE, overwrite = FALSE
-        )
+      query <- character(0)
+      # Use insert rows
+      if (add & length(Comp_obj$added)) {
+        query <- c(query, insert_rows(object,
+          revision[revision[[key]] %in% Comp_obj$added, ], name,
+          eval = FALSE
+        ))
       }
       if (delete & length(Comp_obj$deleted) > 0) {
-        query <- paste(
+        query <- c(query, paste(
           paste0(
             "delete from \"",
             paste0(name, collapse = "\".\""), "\""
@@ -110,14 +118,13 @@ setMethod(
             "where \"", key, "\" in ('",
             paste0(Comp_obj$deleted, collapse = "','"), "')"
           )
-        )
-        dbSendQuery(object, query)
+        ))
       }
       if (update & nrow(Comp_obj$updated) > 0) {
         ref_tab <- reshape_updated(Comp_obj, key)
         ref_tab$new_vals <- gsub("'", "''", ref_tab$new_vals, fixed = TRUE)
         for (i in 1:nrow(ref_tab)) {
-          query <- paste(
+          query <- c(query, paste(
             paste0(
               "update \"",
               paste0(name, collapse = "\".\""), "\""
@@ -127,13 +134,15 @@ setMethod(
               ref_tab$new_vals[i], "'"
             ),
             paste0("where \"", key, "\" = '", ref_tab[[key]][i], "'")
-          )
-          dbSendQuery(object, query)
+          ))
         }
       }
-    }
-    if (any(c(add, delete, update))) {
-      message("DONE!")
+      class(query) <- c("sql", "character")
+      if (eval) {
+        dbSendQuery(object, query)
+        message("DONE!")
+      }
+      invisible(query)
     }
   }
 )

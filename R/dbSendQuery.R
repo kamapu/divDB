@@ -7,7 +7,7 @@
 #' by [read_sql()].
 #' Each statement will be executed in a loop.
 #'
-#' @param conn A connection as [PostgreSQLConnection-class] object.
+#' @param conn A connection as [RPostgreSQL::PostgreSQLConnection-class] object.
 #' @param statement A sql object.
 #' @param ... Further arguments passed among methods.
 #'
