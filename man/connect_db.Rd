@@ -15,19 +15,19 @@ connect_db(
 )
 }
 \arguments{
-\item{dbname, host, port}{Character values passed to \code{\link[=dbConnect]{dbConnect()}}.}
+\item{dbname, host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
-\item{user, password}{Character values. They are passed to \code{\link[=dbConnect]{dbConnect()}}.
+\item{user, password}{Character values. They are passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.
 If not provided, they will be prompted by \code{\link[=credentials]{credentials()}}.}
 
 \item{pkg}{A character value indicating the alternative package used to
 establish the connection. At the moment only \code{RpostgreSQL} and
 \code{RPostgres} are suitable.}
 
-\item{...}{Further arguments passed to \code{\link[=dbConnect]{dbConnect()}}.}
+\item{...}{Further arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
 \value{
-A connection as \linkS4class{PostgreSQLConnection}.
+A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection}.
 }
 \description{
 This function opens a prompt to insert connection details to a PostgreSQL

@@ -11,7 +11,7 @@
 \S4method{compare_df}{list,list,list}(x, y, key, ...)
 }
 \arguments{
-\item{x}{A \linkS4class{PostgreSQLConnection} connecting to a database.}
+\item{x}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} connecting to a database.}
 
 \item{y}{A data frame including the reviewed version of the table.}
 
@@ -25,8 +25,8 @@ and returns an error message if not present.}
 \item{...}{Further arguments passed among methods. No yet in use.}
 }
 \value{
-Either a \linkS4class{comp_df} or a \linkS4class{comp_list} object, depending on the
-used method.
+Either a \link[biblio:comp_df-class]{biblio::comp_df} or a \linkS4class{comp_list} object, depending on
+the used method.
 }
 \description{
 Database tables may be exported for editing as data frames. This method

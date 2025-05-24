@@ -7,7 +7,7 @@
 #' Database tables may be exported for editing as data frames. This method
 #' allows for comparing editions done in data frame.
 #'
-#' @param x A [PostgreSQLConnection-class] connecting to a database.
+#' @param x A [RPostgreSQL::PostgreSQLConnection-class] connecting to a database.
 #' @param y A data frame including the reviewed version of the table.
 #' @param key A character value indicating the name of the primary key in the
 #'     tables.
@@ -17,8 +17,8 @@
 #' @param ... Further arguments passed among methods. No yet in use.
 #'
 #' @return
-#' Either a [comp_df-class] or a [comp_list-class] object, depending on the
-#' used method.
+#' Either a [biblio::comp_df-class] or a [comp_list-class] object, depending on
+#' the used method.
 #'
 #' @aliases compare_df,PostgreSQLConnection,data.frame,character-method
 #' @exportMethod compare_df

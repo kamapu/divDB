@@ -6,7 +6,8 @@
 #' Updating database tables from data frames using a column as key value.
 #' A SQL script will be created running row-wise updates.
 #'
-#' @param x A [PostgreSQLConnection-class] connecting to a database.
+#' @param x A [RPostgreSQL::PostgreSQLConnection-class] connecting to a
+#'     database.
 #' @param y A data frame including identifiers and columns with values to be
 #'     updated.
 #' @param name A character vector with the name of the schema and table in the

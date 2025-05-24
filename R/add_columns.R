@@ -7,7 +7,7 @@
 #' For convenience new columns can be listed in a data frame including type
 #' and comments.
 #'
-#' @param conn A [PostgreSQLConnection-class] connection to a database.
+#' @param conn A [RPostgreSQL::PostgreSQLConnection-class] connection to a database.
 #' @param df A data frame with definitions for new columns. The mandatory
 #'     columns are **name**, **type** (the type of new columns, including
 #'     constraints), and **comment** (comments added to the columns).

@@ -6,7 +6,8 @@
 #' New rows can be inserted from data frames into a Postgres table.
 #' This function will first construct the sql commands to do the insert.
 #'
-#' @param x A [PostgreSQLConnection-class] connecting to a database.
+#' @param x A [RPostgreSQL::PostgreSQLConnection-class] connecting to a
+#'     database.
 #' @param y A data frame including the reviewed version of the table.
 #' @param name A character vector with the name of the schema and table in the
 #'     database. This function tests the existence of the table in the database

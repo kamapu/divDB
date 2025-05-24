@@ -10,6 +10,7 @@
   revision,
   key,
   name,
+  eval = TRUE,
   add = FALSE,
   delete = FALSE,
   update = FALSE,
@@ -17,7 +18,7 @@
 )
 }
 \arguments{
-\item{object}{A connection as \linkS4class{PostgreSQLConnection}.}
+\item{object}{A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection}.}
 
 \item{revision}{A data frame with the editions for 'object'.}
 
@@ -27,10 +28,19 @@ identifier for references.}
 \item{name}{Character vector with two values indicating the name of the
 schema and the name of the table in Postgres, respectively.}
 
+\item{eval}{A logical value, whether the resulting SQL commands should be
+executed or not. This may be usefull if the target is retrieving SQL
+scripts for further execution.}
+
 \item{add, delete, update}{Logical value indicating whether the respective
 edition should be carried out in the database.}
 
 \item{...}{Further arguments passed among methods. Not yet used.}
+}
+\value{
+If all of add, delete and update are FALSE, this function returns an object
+of class \link[biblio:comp_df-class]{biblio::comp_df}.
+Otherwise, it returns an invisible \linkS4class{sql} object.
 }
 \description{
 Edition can be done in a data frame imported from a database table. Those

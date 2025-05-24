@@ -11,7 +11,8 @@ update_rows(x, y, ...)
 \S4method{update_rows}{PostgreSQLConnection,data.frame}(x, y, name, key, eval = TRUE, ...)
 }
 \arguments{
-\item{x}{A \linkS4class{PostgreSQLConnection} connecting to a database.}
+\item{x}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} connecting to a
+database.}
 
 \item{y}{A data frame including identifiers and columns with values to be
 updated.}

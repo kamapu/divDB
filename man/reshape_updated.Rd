@@ -7,7 +7,8 @@
 reshape_updated(comp, key)
 }
 \arguments{
-\item{comp}{A object of class \linkS4class{comp_df} resulted from \code{\link[=compare_df]{compare_df()}}.}
+\item{comp}{A object of class \link[biblio:comp_df-class]{biblio::comp_df} resulted from
+\code{\link[=compare_df]{compare_df()}}.}
 }
 \description{
 Ease the update of modified tables usind SQL and loops

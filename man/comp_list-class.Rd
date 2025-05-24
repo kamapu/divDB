@@ -4,6 +4,6 @@
 \alias{comp_list-class}
 \title{Comparison between two lists of data frames}
 \description{
-Extension of class \linkS4class{comp_df} applied to comparisons of multiple data
-frames.
+Extension of class \link[biblio:comp_df-class]{biblio::comp_df} applied to comparisons of
+multiple data frames.
 }

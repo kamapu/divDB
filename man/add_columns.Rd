@@ -11,7 +11,7 @@ add_columns(conn, ...)
 \method{add_columns}{PostgreSQLConnection}(conn, df, name, eval = TRUE, ...)
 }
 \arguments{
-\item{conn}{A \linkS4class{PostgreSQLConnection} connection to a database.}
+\item{conn}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} connection to a database.}
 
 \item{...}{Further arguments passed among methods.}
 

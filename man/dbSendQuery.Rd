@@ -8,7 +8,7 @@
 \S4method{dbSendQuery}{PostgreSQLConnection,sql}(conn, statement, ...)
 }
 \arguments{
-\item{conn}{A connection as \linkS4class{PostgreSQLConnection} object.}
+\item{conn}{A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} object.}
 
 \item{statement}{A sql object.}
 

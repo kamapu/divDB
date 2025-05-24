@@ -14,7 +14,7 @@
 \alias{do_character,Date-method}
 \alias{do_character.data.frame}
 \alias{do_character,data.frame-method}
-\title{Convert verctors to characters for building queries}
+\title{Convert vectors to characters for building queries}
 \usage{
 do_character(x, ...)
 
