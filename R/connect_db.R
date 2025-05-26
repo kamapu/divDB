@@ -1,12 +1,16 @@
 #' @name connect_db
+#' @rdname connect_db
 #'
 #' @title Connect to PostgreSQL database
 #'
 #' @description
-#' This function opens a prompt to insert connection details to a PostgreSQL
+#' It opens a prompt to insert connection details to a PostgreSQL
 #' database.
+#' Consequently `disconnect_db()` will be used to close the opened connection.
 #'
 #' @param dbname,host,port Character values passed to [DBI::dbConnect()].
+#' @param conn A connection of class [RPostgreSQL::PostgreSQLConnection-class]
+#'     or [RPostgres::PqConnection-class].
 #' @param user,password Character values. They are passed to [DBI::dbConnect()].
 #'     If not provided, they will be prompted by [credentials()].
 #' @param pkg A character value indicating the alternative package used to
@@ -15,7 +19,8 @@
 #' @param ... Further arguments passed to [DBI::dbConnect()].
 #'
 #' @return
-#' A connection as [RPostgreSQL::PostgreSQLConnection-class].
+#' A connection as [RPostgreSQL::PostgreSQLConnection-class] or
+#' [RPostgres::PqConnection-class], depending on the selected package.
 #'
 #' @references
 #' http://r.789695.n4.nabble.com/tkentry-that-exits-after-RETURN-tt854721.html#none
@@ -59,4 +64,27 @@ connect_db <- function(dbname = "", host = "localhost", port = "5432",
       ...
     ))
   }
+}
+
+#' @rdname connect_db
+#' @aliases disconnect_db
+#' @export
+disconnect_db <- function(conn, ...) {
+  UseMethod("disconnect_db", conn)
+}
+
+#' @rdname connect_db
+#' @aliases disconnect_db,PostgreSQLConnection-method
+#' @method disconnect_db PostgreSQLConnection
+#' @export
+disconnect_db.PostgreSQLConnection <- function(conn, ...) {
+  DBI::dbDisconnect(conn, ...)
+}
+
+#' @rdname connect_db
+#' @aliases disconnect_db,PqConnection-method
+#' @method disconnect_db PqConnection
+#' @export
+disconnect_db.PqConnection <- function(conn, ...) {
+  DBI::dbDisconnect(conn, ...)
 }

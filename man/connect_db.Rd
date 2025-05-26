@@ -2,6 +2,11 @@
 % Please edit documentation in R/connect_db.R
 \name{connect_db}
 \alias{connect_db}
+\alias{disconnect_db}
+\alias{disconnect_db.PostgreSQLConnection}
+\alias{disconnect_db,PostgreSQLConnection-method}
+\alias{disconnect_db.PqConnection}
+\alias{disconnect_db,PqConnection-method}
 \title{Connect to PostgreSQL database}
 \usage{
 connect_db(
@@ -13,6 +18,12 @@ connect_db(
   pkg = "RPostgreSQL",
   ...
 )
+
+disconnect_db(conn, ...)
+
+\method{disconnect_db}{PostgreSQLConnection}(conn, ...)
+
+\method{disconnect_db}{PqConnection}(conn, ...)
 }
 \arguments{
 \item{dbname, host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
@@ -25,13 +36,18 @@ establish the connection. At the moment only \code{RpostgreSQL} and
 \code{RPostgres} are suitable.}
 
 \item{...}{Further arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+
+\item{conn}{A connection of class \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection}
+or \link[RPostgres:PqConnection-class]{RPostgres::PqConnection}.}
 }
 \value{
-A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection}.
+A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} or
+\link[RPostgres:PqConnection-class]{RPostgres::PqConnection}, depending on the selected package.
 }
 \description{
-This function opens a prompt to insert connection details to a PostgreSQL
+It opens a prompt to insert connection details to a PostgreSQL
 database.
+Consequently \code{disconnect_db()} will be used to close the opened connection.
 }
 \references{
 http://r.789695.n4.nabble.com/tkentry-that-exits-after-RETURN-tt854721.html#none
