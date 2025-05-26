@@ -8,5 +8,6 @@
 #'     tkgrid tkgrid.configure tklabel tktoplevel tkwait.window tkwm.title
 #' @importFrom tools file_path_sans_ext
 #' @importClassesFrom biblio comp_df
+#' @importClassesFrom RPostgres PqConnection
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
 NULL

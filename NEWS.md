@@ -1,3 +1,9 @@
+# divDB 0.1.3
+
+## New features
+
+- New function `disconnect_db()`.
+
 # divDB 0.1.2
 
 ## Improvements
