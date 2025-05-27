@@ -40,7 +40,7 @@ add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
     ))
   }
   df$comment <- gsub("'", "''", df$comment, fixed = TRUE)
-  query <- with(df, paste("add column", name, type))
+  query <- with(df, paste0("add column \"", name, "\" ", type))
   query <- paste0(
     paste0("alter table \"", paste0(name, collapse = "\".\""), "\"\n"),
     paste0(query, collapse = ",\n")
