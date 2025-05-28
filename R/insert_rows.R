@@ -47,6 +47,9 @@ setMethod(
     cols_in_db <- names(y)[names(y) %in% db_col_names]
     # Prepare input
     y <- do_character(y[cols_in_db])
+    for (i in names(y)) {
+      y[[i]] <- gsub("'", "''", y[[i]], fixed = TRUE)
+    }
     query_values <- paste0(
       "(",
       apply(y, 1, paste, collapse = ","), ")"
