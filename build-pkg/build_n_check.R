@@ -1,4 +1,6 @@
 library(devtools)
+library(roxygen2)
+library(rmarkdown)
 library(styler)
 
 # Clean session
