@@ -1,8 +1,13 @@
-# divDB 0.1.3
+# divDB 0.2
 
 ## New features
 
-- New function `disconnect_db()`.
+- New function `disconnect_db()` to disconnect database connections.
+- New funciton `new_sql()` to create empty `sql` objects.
+- Coercion of `character` vectors to `sql` using either `new_sql()` or 
+  `as(x, "sql")`.
+- A series of functions writing sql statements independent of a database
+  connection.
 
 # divDB 0.1.2
 
