@@ -2,15 +2,21 @@
 % Please edit documentation in R/add_columns_sql.R
 \name{add_columns_sql}
 \alias{add_columns_sql}
+\alias{insert_rows_sql}
 \title{Write plain SQL commands}
 \usage{
 add_columns_sql(df, name)
+
+insert_rows_sql(df, name)
 }
 \arguments{
-\item{df}{A data frame including at least the columns \strong{name} and \strong{type},
-with the columns' names and respective types in the database.
+\item{df}{In \code{add_columns_sql()}, a data frame including at least the columns
+\strong{name} and \strong{type}, with the columns' names and respective types in
+the database.
 An optional column \strong{comment} may be included to comment the respective
-columns.}
+columns.
+In \code{insert_rows_sql()} is the data frame including the values to be
+inserted in the database table.}
 
 \item{name}{A character vector including the name of the schema and the name
 of the table to which the columns have to be added.}

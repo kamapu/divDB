@@ -7,10 +7,13 @@
 #' A set of functions writing plain queries without requiring a database
 #' connection.
 #'
-#' @param df A data frame including at least the columns **name** and **type**,
-#'     with the columns' names and respective types in the database.
+#' @param df In `add_columns_sql()`, a data frame including at least the columns
+#'     **name** and **type**, with the columns' names and respective types in
+#'     the database.
 #'     An optional column **comment** may be included to comment the respective
 #'     columns.
+#'     In `insert_rows_sql()` is the data frame including the values to be
+#'     inserted in the database table.
 #' @param name A character vector including the name of the schema and the name
 #'     of the table to which the columns have to be added.
 #'
@@ -44,5 +47,23 @@ add_columns_sql <- function(df, name) {
       )
     )
   }
+  return(as(query, "sql"))
+}
+
+#' @rdname add_columns_sql
+#' @aliases insert_rows_sql
+#' @export
+insert_rows_sql <- function(df, name) {
+  # prepare input
+  df <- do_character(df)
+  query_values <- paste0(
+    "(",
+    apply(df, 1, paste, collapse = ","), ")"
+  )
+  query <- paste0(
+    "insert into \"", paste0(name, collapse = "\".\""), "\" (\"",
+    paste0(names(df), collapse = "\",\""), "\")\nvalues\n",
+    paste0(query_values, collapse = ",\n"), ";"
+  )
   return(as(query, "sql"))
 }

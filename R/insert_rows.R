@@ -30,6 +30,7 @@ setMethod(
     if (!dbExistsTable(x, name)) {
       stop("The target table does not exist in the database.")
     }
+    # Check for columns in database
     db_col_names <- unlist(dbGetQuery(x, paste(
       "select column_name",
       "from information_schema.columns",
@@ -45,23 +46,8 @@ setMethod(
       ))
     }
     cols_in_db <- names(y)[names(y) %in% db_col_names]
-    # Prepare input
-    y <- do_character(y[cols_in_db])
-    for (i in names(y)) {
-      y[[i]] <- gsub("'", "''", y[[i]], fixed = TRUE)
-    }
-    query_values <- paste0(
-      "(",
-      apply(y, 1, paste, collapse = ","), ")"
-    )
-    query <- paste0(
-      "insert into \"", paste0(name, collapse = "\".\""), "\" (\"",
-      paste0(names(y), collapse = "\",\""), "\")\nvalues\n",
-      paste0(query_values, collapse = ",\n"), ";"
-    )
-    # Last steps
-    class(query) <- c("sql", "character")
-    # Run query, if requested
+    query <- insert_rows_sql(y[cols_in_db], name)
+    # Run query if required
     if (eval) {
       dbSendQuery(x, query)
       message("DONE!")

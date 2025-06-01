@@ -1,6 +1,6 @@
 library(divDB)
 
-# Create data frame for 
+# Create data frame for database
 df <- data.frame(
         name = c("sepal_length", "sepal_width", "petal_length", "petal_width",
                 "species"),
