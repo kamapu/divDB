@@ -1,5 +1,7 @@
-#' @name write_queries
-#' @rdname write_queries
+#' @name add_columns_sql
+#' @rdname add_columns_sql
+#'
+#' @title Write plain SQL commands
 #'
 #' @description
 #' A set of functions writing plain queries without requiring a database
@@ -9,11 +11,13 @@
 #'     with the columns' names and respective types in the database.
 #'     An optional column **comment** may be included to comment the respective
 #'     columns.
+#' @param name A character vector including the name of the schema and the name
+#'     of the table to which the columns have to be added.
 #'
 #' @return A [sql-class] object including the respective query commands.
 #'
 #' @export
-add_columns_sql <- function(df) {
+add_columns_sql <- function(df, name) {
   # Check for mandatory column names
   name_cols <- c("name", "type")
   name_cols <- name_cols[!name_cols %in% names(df)]

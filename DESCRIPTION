@@ -28,11 +28,11 @@ URL: https://github.com/kamapu/divDB
 BugReports: https://github.com/kamapu/divDB/issues
 RoxygenNote: 7.3.2.9000
 Collate:
-	'imports.R'
     'credentials.R'
     'sql-class.R'
-    'write_queries.R'
     'comp_list-class.R'
+    'imports.R'
+    'add_columns_sql.R'
     'get_precision.R'
     'do_backup.R'
     'read_sql.R'

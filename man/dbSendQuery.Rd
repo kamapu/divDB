@@ -15,7 +15,7 @@
 \item{...}{Further arguments passed among methods.}
 }
 \description{
-A wrapper of \code{\link[=dbSendQuery]{dbSendQuery()}} for convenience to send SQL commands read
+A wrapper of \code{\link[DBI:dbSendQuery]{DBI::dbSendQuery()}} for convenience to send SQL commands read
 by \code{\link[=read_sql]{read_sql()}}.
 Each statement will be executed in a loop.
 }

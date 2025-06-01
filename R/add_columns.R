@@ -31,18 +31,28 @@ add_columns <- function(conn, ...) {
 #' @method add_columns PostgreSQLConnection
 #' @export
 add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
-  # Retieves column names (and check existence of table)
+  # Check existence of tables
+  tab_names <- dbGetQuery(conn, paste(
+    "select table_name",
+    "from information_schema.tables",
+    paste0("where table_schema = '", name[1], "'")
+  ))$table_name
+  if (!name[2] %in% tab_names) {
+    stop("The target relation does not exist in the database.")
+  }
+  # Check for column 'name'
+  if (!"name" %in% names(df)) {
+    stop("The column 'name' is mandatory in 'df'")
+  }
+  # Retieves column names
   col_names <- dbGetQuery(conn, paste(
     "select column_name",
     "from information_schema.columns",
     paste0("where table_schema = '", name[1], "'"),
     paste0("and table_name = '", name[2], "'")
   ))$column_name
-  if (!length(col_names)) {
-    stop("The target relation does not exist in the database.")
-  }
   # Check for existing columns
-  names_in_df <- names(df)[names(df) %in% col_names]
+  names_in_df <- df$name[df$name %in% col_names]
   if (length(names_in_df)) {
     stop(paste0(
       "Following columns already exists in database:\n\"",
@@ -51,7 +61,7 @@ add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
     ))
   }
   # Write the query
-  query <- add_columns_sql(df)
+  query <- add_columns_sql(df, name)
   if (eval) {
     dbSendQuery(conn, query)
     message("DONE!")
