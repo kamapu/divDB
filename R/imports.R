@@ -1,7 +1,7 @@
 #' @importFrom biblio compare_df update_data
 #' @importFrom DBI dbConnect dbDisconnect dbExistsTable dbGetQuery dbReadTable
 #'     dbSendQuery
-#' @importFrom methods setMethod
+#' @importFrom methods as setMethod
 #' @importFrom RPostgres Postgres
 #' @importFrom taxlist insert_rows sort_backups
 #' @importFrom tcltk tclVar tclvalue tkbind tkbutton tkdestroy tkentry tkfocus

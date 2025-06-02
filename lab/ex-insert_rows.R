@@ -4,70 +4,48 @@
 ################################################################################
 
 library(divDB)
-library(RPostgres)
 
-cred <- credentials()
-db_name <- "vegetation-db"
-
-conn <- connect_db(db_name, user = cred["user"], password = cred["password"])
-
-# Drop database if exists
-dbSendQuery(conn, "drop database if exists iris_test")
-dbSendQuery(conn, "create database iris_test")
-
-# reconnect
-dbDisconnect(conn)
-db_name <- "iris_test"
-conn <- connect_db(db_name, user = cred["user"], password = cred["password"])
-
-# Read script
-query <- read_sql("lab/create-iris.sql")
-query
-divDB::dbSendQuery(conn, query)
-
-# Prepare data set
+# Input data
 iris_df <- iris
-names(iris_df) <- c("sepal_length", "sepal_width", "petal_length",
-    "petal_width", "species")
+names(iris_df) <- taxlist::replace_x(x = names(iris_df),
+    old = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width",
+        "Species"),
+    new = c("sepal_length", "sepal_width", "petal_length", "petal_width",
+        "species"))
 
-iris_df <- split(iris_df, iris_df$species)
+# Insert rows (only queries)
+insert_rows_sql(iris_df[1:5, ], c("data_frames", "iris3"))
 
-# No rows in database
-dbGetQuery(conn, "select * from data_frames.iris")
+# Create data frame for database
+table_def <- data.frame(
+        name = c("sepal_length", "sepal_width", "petal_length", "petal_width",
+                "species", "id"),
+        type = c(rep("double precision", 4), "text", "serial primary key"),
+        comment = paste("comment", 1:6))
 
-# Insert rows
-query1 <- insert_rows(conn, iris_df$setosa, c("data_frames", "iris"),
-    eval = FALSE)
-query1
+# Connect data frame and create empty table
+conn <- connect_db("test-db")
 
-insert_rows(conn, iris_df$setosa, c("data_frames", "iris"))
+dbSendQuery(conn, "create schema if not exists data_frames")
+dbSendQuery(conn, "create table if not exists data_frames.iris3 ()")
 
-dbGetQuery(conn, "select * from data_frames.iris")
+# Add columns without content
+add_columns(conn, table_def, c("data_frames", "iris3"))
 
-# Insert rows with additional columns
-iris_df$versicolor$source <- "R data iris"
-iris_df$versicolor$author <- "Myself"
+# add rows (only queries)
+query <- insert_rows(conn, iris_df[1:5, ], c("data_frames", "iris3"),
+        eval = FALSE)
+query
 
-query2 <- insert_rows(conn, iris_df$versicolor, c("data_frames", "iris"),
-    eval = FALSE)
-query2
+# Add rows into database
+insert_rows(conn, iris_df, c("data_frames", "iris3"))
 
-insert_rows(conn, iris_df$versicolor, c("data_frames", "iris"))
+# Error message if table not existing
+insert_rows(conn, iris_df, c("data_frames", "iris4"))
 
-dbGetQuery(conn, paste("select *", "from data_frames.iris",
-        "where species = 'versicolor'"))
+# Message for columns not included in database
+iris_df$remarks <- "Some remarks."
+insert_rows(conn, iris_df[1:5, ], c("data_frames", "iris3"))
 
-# Insert NA's
-iris_df$virginica$sepal_length[sample(1:50, 4)] <- NA
-iris_df$virginica$species[sample(1:50, 4)] <- NA
-
-query3 <- insert_rows(conn, iris_df$virginica, c("data_frames", "iris"),
-    eval = FALSE)
-query3
-
-insert_rows(conn, iris_df$virginica, c("data_frames", "iris"))
-
-dbGetQuery(conn, paste("select *", "from data_frames.iris",
-        "where species != 'versicolor'", "and species != 'setosa'"))
-
-dbGetQuery(conn, "select * from data_frames.iris")
+# Disconnect database
+disconnect_db(conn)

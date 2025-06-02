@@ -31,29 +31,37 @@ add_columns <- function(conn, ...) {
 #' @method add_columns PostgreSQLConnection
 #' @export
 add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
-  name_cols <- c("name", "type", "comment")
-  name_cols <- name_cols[!name_cols %in% names(df)]
-  if (length(name_cols) > 0) {
+  # Check existence of tables
+  tab_names <- dbGetQuery(conn, paste(
+    "select table_name",
+    "from information_schema.tables",
+    paste0("where table_schema = '", name[1], "'")
+  ))$table_name
+  if (!name[2] %in% tab_names) {
+    stop("The target relation does not exist in the database.")
+  }
+  # Check for column 'name'
+  if (!"name" %in% names(df)) {
+    stop("The column 'name' is mandatory in 'df'")
+  }
+  # Retieves column names
+  col_names <- dbGetQuery(conn, paste(
+    "select column_name",
+    "from information_schema.columns",
+    paste0("where table_schema = '", name[1], "'"),
+    paste0("and table_name = '", name[2], "'")
+  ))$column_name
+  # Check for existing columns
+  names_in_df <- df$name[df$name %in% col_names]
+  if (length(names_in_df)) {
     stop(paste0(
-      "Following mandatory columns are missing in 'df': '",
-      paste0(name_cols, collapse = "', '"), "'."
+      "Following columns already exists in database:\n\"",
+      paste0(names_in_df, collapse = "\", \"."),
+      "\""
     ))
   }
-  df$comment <- gsub("'", "''", df$comment, fixed = TRUE)
-  query <- with(df, paste0("add column \"", name, "\" ", type))
-  query <- paste0(
-    paste0("alter table \"", paste0(name, collapse = "\".\""), "\"\n"),
-    paste0(query, collapse = ",\n")
-  )
-  query <- c(
-    query,
-    paste0(
-      "comment on column \"", paste0(name, collapse = "\".\""), "\".\"",
-      df$name, "\" is '", df$comment, "'"
-    )
-  )
-  class(query) <- c("sql", "character")
-  # Evaluate, if requested
+  # Write the query
+  query <- add_columns_sql(df, name)
   if (eval) {
     dbSendQuery(conn, query)
     message("DONE!")

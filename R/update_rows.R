@@ -71,21 +71,8 @@ setMethod(
       ))
     }
     cols_in_db <- names(y)[names(y) %in% db_col_names]
-    # Prepare input
-    y <- do_character(y[cols_in_db])
-    # set values
-    for (i in names(y)) {
-      y[[i]] <- paste0(paste0("\"", i, "\" = "), y[[i]])
-    }
-    # Write query
-    query <- paste0(
-      "update \"", paste0(name, collapse = "\".\""), "\"\n",
-      paste0("set ", apply(y[!names(y) %in% key], 1, paste0,
-        collapse = ", "
-      ), "\n"),
-      paste0("where ", apply(y[key], 1, paste, collapse = " and ")), ";"
-    )
-    class(query) <- c("sql", "character")
+    # Write the queries
+    query <- update_rows_sql(y[cols_in_db], name, key)
     # Run query, if requested
     if (eval) {
       dbSendQuery(x, query)

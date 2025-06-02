@@ -3,7 +3,7 @@
 #' @title Send multiple queries to a database
 #'
 #' @description
-#' A wrapper of [dbSendQuery()] for convenience to send SQL commands read
+#' A wrapper of [DBI::dbSendQuery()] for convenience to send SQL commands read
 #' by [read_sql()].
 #' Each statement will be executed in a loop.
 #'

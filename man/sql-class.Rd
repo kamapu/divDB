@@ -2,8 +2,29 @@
 % Please edit documentation in R/sql-class.R
 \name{sql-class}
 \alias{sql-class}
+\alias{new_sql}
+\alias{as}
+\alias{coerce,character,sql-method}
 \title{A class for lists of SQL commands}
+\usage{
+new_sql(x)
+}
+\arguments{
+\item{x}{A character vector to be converted to class \code{sql}.}
+}
 \description{
 Multiple SQL commands can be read from a *.sql file by \code{\link[=read_sql]{read_sql()}} and
 stored as a character vector.
+
+\code{new_sql()} can be used either to retrieves an empty object or to coerce
+a character vector into \code{sql}.
+Alternatively you can use \code{as(x, "sql")}.
+}
+\examples{
+## Write a SQL command as text
+x <- "create table public.iris"
+
+## Convert to sql class
+new_sql(x)
+as(x, "sql")
 }

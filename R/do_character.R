@@ -23,6 +23,7 @@ do_character <- function(x, ...) {
 #' @export
 do_character.character <- function(x, ...) {
   idx <- is.na(x)
+  x <- gsub("'", "''", x, fixed = TRUE)
   x <- paste0("\'", x, "\'")
   x[idx] <- "null"
   return(x)
