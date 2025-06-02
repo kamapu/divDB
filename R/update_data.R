@@ -100,7 +100,7 @@ setMethod(
     if (all(!c(add, delete, update))) {
       return(Comp_obj)
     } else {
-      query <- character(0)
+      query <- new_sql()
       # Use insert rows
       if (add & length(Comp_obj$added)) {
         query <- c(query, insert_rows(object,
@@ -109,20 +109,11 @@ setMethod(
         ))
       }
       if (delete & length(Comp_obj$deleted) > 0) {
-        query <- c(query, paste(
-          paste0(
-            "delete from \"",
-            paste0(name, collapse = "\".\""), "\""
-          ),
-          paste0(
-            "where \"", key, "\" in ('",
-            paste0(Comp_obj$deleted, collapse = "','"), "')"
-          )
-        ))
+        query <- c(query, delete_rows_sql(Comp_obj$deleted, name, key))
       }
       if (update & nrow(Comp_obj$updated) > 0) {
         ref_tab <- reshape_updated(Comp_obj, key)
-        ref_tab$new_vals <- gsub("'", "''", ref_tab$new_vals, fixed = TRUE)
+        ref_tab$new_vals <- do_character(ref_tab$new_vals)
         for (i in 1:nrow(ref_tab)) {
           query <- c(query, paste(
             paste0(
@@ -130,14 +121,14 @@ setMethod(
               paste0(name, collapse = "\".\""), "\""
             ),
             paste0(
-              "set \"", ref_tab$vars[i], "\" = '",
-              ref_tab$new_vals[i], "'"
+              "set \"", ref_tab$vars[i], "\" = ",
+              ref_tab$new_vals[i]
             ),
-            paste0("where \"", key, "\" = '", ref_tab[[key]][i], "'")
+            paste0("where \"", key, "\" = ", ref_tab[[key]][i])
           ))
         }
       }
-      class(query) <- c("sql", "character")
+      query <- as(query, "sql")
       if (eval) {
         dbSendQuery(object, query)
         message("DONE!")

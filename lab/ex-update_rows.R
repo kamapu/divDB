@@ -24,7 +24,6 @@ names(iris_df) <- taxlist::replace_x(x = names(iris_df),
     new = c("sepal_length", "sepal_width", "petal_length", "petal_width",
         "species"))
 
-
 # Connect data frame and create empty table
 conn <- connect_db("test-db")
 

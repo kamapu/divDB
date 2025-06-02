@@ -4,6 +4,7 @@
 \alias{add_columns_sql}
 \alias{insert_rows_sql}
 \alias{update_rows_sql}
+\alias{delete_rows_sql}
 \title{Write plain SQL commands}
 \usage{
 add_columns_sql(df, name)
@@ -11,6 +12,8 @@ add_columns_sql(df, name)
 insert_rows_sql(df, name)
 
 update_rows_sql(df, name, key)
+
+delete_rows_sql(x, name, key)
 }
 \arguments{
 \item{df}{In \code{add_columns_sql()}, a data frame including at least the columns
@@ -26,6 +29,10 @@ of the table to which the columns have to be added.}
 
 \item{key}{A character value indicating the name of the column used to match
 updated rows.}
+
+\item{x}{A vector of values used as indices to delete rows by
+\code{delete_rows_sql()}. These values have to match those of the column 'key'
+in the database.}
 }
 \value{
 A \linkS4class{sql} object including the respective query commands.

@@ -18,6 +18,9 @@
 #'     of the table to which the columns have to be added.
 #' @param key A character value indicating the name of the column used to match
 #'     updated rows.
+#' @param x A vector of values used as indices to delete rows by
+#'     `delete_rows_sql()`. These values have to match those of the column 'key'
+#'     in the database.
 #'
 #' @return A [sql-class] object including the respective query commands.
 #'
@@ -88,5 +91,19 @@ update_rows_sql <- function(df, name, key) {
     paste0("where ", apply(df[key], 1, paste, collapse = " and ")), ";"
   )
   # Return query
+  return(as(query, "sql"))
+}
+
+#' @rdname add_columns_sql
+#' @aliases delete_rows_sql
+#' @export
+delete_rows_sql <- function(x, name, key) {
+  x <- do_character(x)
+  query <- paste(
+    paste0("delete from \"", paste0(name, collapse = "\".\""), "\""),
+    paste0("where \"", key, "\" in (", paste0(x,
+      collapse = ","
+    ), ")")
+  )
   return(as(query, "sql"))
 }
