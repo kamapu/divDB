@@ -12,10 +12,12 @@
 #'     the database.
 #'     An optional column **comment** may be included to comment the respective
 #'     columns.
-#'     In `insert_rows_sql()` is the data frame including the values to be
-#'     inserted in the database table.
+#'     In `insert_rows_sql()` and `update_rows_sql()` is the data frame
+#'     including the values to be inserted in the database table.
 #' @param name A character vector including the name of the schema and the name
 #'     of the table to which the columns have to be added.
+#' @param key A character value indicating the name of the column used to match
+#'     updated rows.
 #'
 #' @return A [sql-class] object including the respective query commands.
 #'
@@ -65,5 +67,26 @@ insert_rows_sql <- function(df, name) {
     paste0(names(df), collapse = "\",\""), "\")\nvalues\n",
     paste0(query_values, collapse = ",\n"), ";"
   )
+  return(as(query, "sql"))
+}
+
+#' @rdname  add_columns_sql
+#' @aliases update_rows_sql
+#' @export
+update_rows_sql <- function(df, name, key) {
+  df <- do_character(df)
+  # set values
+  for (i in names(df)) {
+    df[[i]] <- paste0(paste0("\"", i, "\" = "), df[[i]])
+  }
+  # Write query
+  query <- paste0(
+    "update \"", paste0(name, collapse = "\".\""), "\"\n",
+    paste0("set ", apply(df[!names(df) %in% key], 1, paste0,
+      collapse = ", "
+    ), "\n"),
+    paste0("where ", apply(df[key], 1, paste, collapse = " and ")), ";"
+  )
+  # Return query
   return(as(query, "sql"))
 }

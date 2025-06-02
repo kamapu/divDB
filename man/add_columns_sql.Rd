@@ -3,11 +3,14 @@
 \name{add_columns_sql}
 \alias{add_columns_sql}
 \alias{insert_rows_sql}
+\alias{update_rows_sql}
 \title{Write plain SQL commands}
 \usage{
 add_columns_sql(df, name)
 
 insert_rows_sql(df, name)
+
+update_rows_sql(df, name, key)
 }
 \arguments{
 \item{df}{In \code{add_columns_sql()}, a data frame including at least the columns
@@ -15,11 +18,14 @@ insert_rows_sql(df, name)
 the database.
 An optional column \strong{comment} may be included to comment the respective
 columns.
-In \code{insert_rows_sql()} is the data frame including the values to be
-inserted in the database table.}
+In \code{insert_rows_sql()} and \code{update_rows_sql()} is the data frame
+including the values to be inserted in the database table.}
 
 \item{name}{A character vector including the name of the schema and the name
 of the table to which the columns have to be added.}
+
+\item{key}{A character value indicating the name of the column used to match
+updated rows.}
 }
 \value{
 A \linkS4class{sql} object including the respective query commands.

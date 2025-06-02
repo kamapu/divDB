@@ -1,60 +1,75 @@
-# TODO:   Add comment
-# 
-# Author: Miguel Alvarez
-################################################################################
-
+# Load packages
 library(divDB)
-library(RPostgres)
 
-cred <- credentials()
-db_name <- "postgres"
-
-conn <- connect_db(db_name, user = cred["user"], password = cred["password"])
-
-# Drop database if exists
-dbSendQuery(conn, "drop database if exists iris_test")
-dbSendQuery(conn, "create database iris_test")
-
-# reconnect
-dbDisconnect(conn)
-db_name <- "iris_test"
-conn <- connect_db(db_name, user = cred["user"], password = cred["password"])
-
-# Read script
-query <- read_sql("lab/create-iris.sql")
-query
-divDB::dbSendQuery(conn, query)
-
-# Prepare data set
+# Input data
 iris_df <- iris
-names(iris_df) <- c("sepal_length", "sepal_width", "petal_length",
-    "petal_width", "species")
+names(iris_df) <- taxlist::replace_x(x = names(iris_df),
+    old = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width",
+        "Species"),
+    new = c("sepal_length", "sepal_width", "petal_length", "petal_width",
+        "species"))
 
-# Insert only data from Iris setosa
-query <- insert_rows(conn, subset(iris_df, species == "setosa"),
-    c("data_frames", "iris"))
+# Create data frame for table definition
+table_def <- data.frame(
+        name = c("sepal_length", "sepal_width", "petal_length", "petal_width",
+                "species", "id"),
+        type = c(rep("double precision", 4), "text", "serial primary key"),
+        comment = paste("comment", 1:6))
+
+# Create data frame for table content
+iris_df <- iris
+names(iris_df) <- taxlist::replace_x(x = names(iris_df),
+    old = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width",
+        "Species"),
+    new = c("sepal_length", "sepal_width", "petal_length", "petal_width",
+        "species"))
 
 
+# Connect data frame and create empty table
+conn <- connect_db("test-db")
 
+dbSendQuery(conn, "create schema if not exists data_frames")
+dbSendQuery(conn, "create table if not exists data_frames.iris ()")
 
+# Add columns without content
+add_columns(conn, table_def, c("data_frames", "iris"))
 
+# insert rows
+insert_rows(conn, iris_df[1:5, ], c("data_frames", "iris"))
 
-# Retrieve the data from database
-iris_db <- dbGetQuery(conn, "select * from data_frames.iris")
-iris_db
+# Update rows (Only query)
+update_df <- data.frame(
+    id = c(1:3),
+    petal_length = c(1:3)*100
+)
 
-# Select and modify entries
-iris_mod <- iris_db[sample(1:nrow(iris_db), 5),
-    c("id", "sepal_length", "petal_length")]
-iris_mod$sepal_length <- 100
-iris_mod$petal_length <- 100
+# Update rows (only queries)
+update_rows_sql(update_df, c("data_frames", "iris"), "id")
 
-# update database
-query <- update_rows(conn, iris_mod, c("data_frames", "iris"),
-    key = "id", eval = FALSE)
+# Update rows connecting database (only queries)
+query <- update_rows(conn, update_df, c("data_frames", "iris"), "id",
+    eval = FALSE)
 query
 
-update_rows(conn, iris_mod, c("data_frames", "iris"), key = "id")
+# Update rows in database
+update_rows(conn, update_df, c("data_frames", "iris"), "id")
 
-# cross-check
-dbGetQuery(conn, "select * from data_frames.iris")
+# Test some errors
+
+# NAs in key column
+update_df$id[2] <- NA
+update_rows(conn, update_df, c("data_frames", "iris"), "id")
+
+# Duplicated values in key
+update_df$id[2] <- 1
+update_rows(conn, update_df, c("data_frames", "iris"), "id")
+
+# Table missing in database
+update_df$id[2] <- 2
+update_rows(conn, update_df, c("data_frames", "iris20"), "id")
+
+# Message for columns that not exists in the database
+update_df$extra_column <- letters[1:3]
+update_rows(conn, update_df, c("data_frames", "iris"), "id")
+
+disconnect_db(conn)
