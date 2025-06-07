@@ -9,6 +9,10 @@
 - A series of functions writing sql statements independent of a database
   connection.
 
+## Bug fixes
+
+- Error in `update_data()` when using a character vector as key value.
+
 # divDB 0.1.2
 
 ## Improvements
