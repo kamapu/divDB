@@ -11,6 +11,11 @@
 
 ## Bug fixes
 
+- Function `write_sql()` is now using `writeLines()` instead of `writeBin()`.
+- Some issues solved with `print.sql()`.
+
+## Bug fixes
+
 - Error in `update_data()` when using a character vector as key value.
 
 # divDB 0.1.2

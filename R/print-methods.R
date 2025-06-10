@@ -29,7 +29,7 @@ print.comp_list <- function(x, ...) {
 #' @export
 print.sql <- function(x, ...) {
   suffix <- c("\n\n", ";\n\n")[match(
-    grepl(";", x, fixed = TRUE),
+    grepl(";$", x),
     c(TRUE, FALSE)
   )]
   for (i in seq_along(x)) {

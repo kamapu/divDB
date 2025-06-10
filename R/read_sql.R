@@ -10,9 +10,6 @@
 #'
 #' @param file A character value indicating the path to the sql file.
 #' @param sql A [sql-class] object containing queries.
-#' @param end Symbol set at the end of a statement (semicolon by default).
-#' @param comment Symbol used to start a comment in script (two dashes by
-#'     default).
 #' @param ... Further arguments passed to [readLines()].
 #'
 #' @return A [sql-class] object.
@@ -20,28 +17,33 @@
 #' @author Miguel Alvarez
 #'
 #' @export
-read_sql <- function(file, end = ";", comment = "--", ...) {
-  Query <- readLines(file, ...)
-  Query <- Query[!(nchar(Query) == 0 | grepl(comment, Query, fixed = TRUE))]
-  Query <- paste0(Query, "\n")
-  idx <- grepl(end, Query, fixed = TRUE)
-  idx <- c(0, cumsum(idx[-length(idx)]))
-  Query <- split(Query, idx)
-  names(Query) <- NULL
-  Query <- sapply(Query, function(x) paste0(x, collapse = ""))
-  Query <- structure(Query, class = c("sql", "character"))
-  return(Query)
+read_sql <- function(file, ...) {
+  query <- readLines(file, ...)
+  query <- query[!(nchar(query) == 0 | grepl("^--", query))]
+  query <- trimws(query, "both")
+  # Index for commands
+  idx <- grepl(";$", query)
+  idx <- c(0, cumsum(idx[-length(idx)])) + 1
+  # Split by queries
+  query <- split(query, idx)
+  query <- sapply(query, function(x) paste0(x, collapse = "\n"))
+  # Return object
+  return(as(query, "sql"))
 }
 
 #' @rdname read_sql
+#' @aliases write_sql
 #' @export
-write_sql <- function(sql, file, ...) {
+write_sql <- function(sql, ...) {
+  UseMethod("write_sql", sql)
+}
+
+#' @rdname read_sql
+#' @aliases write_sql,sql-method
+#' @method write_sql sql
+#' @export
+write_sql.sql <- function(sql, file, ...) {
   file <- paste0(file_path_sans_ext(file), ".sql")
-  suffix <- c("\n\n", ";\n\n")[match(
-    grepl(";", sql, fixed = TRUE),
-    c(TRUE, FALSE)
-  )]
-  con <- file(file, "wb")
-  writeBin(charToRaw(paste0(paste0(sql, suffix), collapse = "")), con)
-  close(con)
+  sql <- paste0(capture.output(print(sql)), collapse = "\n")
+  writeLines(sql, file, ...)
 }
