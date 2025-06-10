@@ -44,5 +44,6 @@ write_sql <- function(sql, ...) {
 #' @export
 write_sql.sql <- function(sql, file, ...) {
   file <- paste0(file_path_sans_ext(file), ".sql")
-  writeLines(paste0(c(as(sql, "character"), ""), collapse = ";\n"), ...)
+  sql <- paste0(capture.output(print(sql)), collapse = "\n")
+  writeLines(sql, file, ...)
 }

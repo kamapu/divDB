@@ -12,6 +12,7 @@
 ## Bug fixes
 
 - Function `write_sql()` is now using `writeLines()` instead of `writeBin()`.
+- Some issues solved with `print.sql()`.
 
 ## Bug fixes
 

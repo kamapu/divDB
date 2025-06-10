@@ -7,6 +7,7 @@
 #' @importFrom tcltk tclVar tclvalue tkbind tkbutton tkdestroy tkentry tkfocus
 #'     tkgrid tkgrid.configure tklabel tktoplevel tkwait.window tkwm.title
 #' @importFrom tools file_path_sans_ext
+#' @importFrom utils capture.output
 #' @importClassesFrom biblio comp_df
 #' @importClassesFrom RPostgres PqConnection
 #' @importClassesFrom RPostgreSQL PostgreSQLConnection
