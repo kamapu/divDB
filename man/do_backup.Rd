@@ -12,9 +12,9 @@ do_backup(
   port = "5432",
   filepath = ".",
   filename = dbname,
+  f_timestamp = "\%Y\%m\%d",
   fext = ".backup",
   path_psql = "/usr/bin",
-  f_timestamp = "\%Y\%m\%d",
   ...
 )
 
@@ -49,15 +49,16 @@ working directory.}
 the function guess the database's name and a time stamp, where the newest
 backup, if many in the same folder, will be used.}
 
+\item{f_timestamp}{Character value indicating the format of the timestamp
+applied to the backup's name (passed as format to \code{\link[=strptime]{strptime()}}). It can
+be cancelled by 'f_timestamp = NULL', then backups may be overwritten.}
+
 \item{fext}{Character value indicating the extension used for the backup
 file, including the leading dot. The extension ".backup" is used by
 default.}
 
 \item{path_psql}{Character value indicating the system path to PostgreSQL
 binaries.}
-
-\item{f_timestamp}{Character value indicating the format of the timestamp
-applied to the backup's name (see \code{\link[=strptime]{strptime()}}).}
 
 \item{...}{Further arguments passed to \code{\link[=system]{system()}}.}
 
