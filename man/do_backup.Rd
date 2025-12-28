@@ -6,11 +6,10 @@
 \title{Create a backup by 'pg_dump' and restore database}
 \usage{
 do_backup(
-  dbname = "",
+  dbname,
+  user,
   host = "localhost",
   port = "5432",
-  user = "",
-  password = "",
   filepath = ".",
   filename = dbname,
   fext = ".backup",
@@ -20,12 +19,11 @@ do_backup(
 )
 
 do_restore(
-  dbname = "",
+  dbname,
+  user,
   backup,
   host = "localhost",
   port = "5432",
-  user = "",
-  password = "",
   filepath = ".",
   filename = dbname,
   fext = ".backup",
@@ -36,16 +34,12 @@ do_restore(
 )
 }
 \arguments{
-\item{dbname}{Character value indicating the name of the target PostgreSQL
-database.}
+\item{dbname, user}{Character value indicating the name of the target
+PostgreSQL database and user.}
 
 \item{host}{Character value, the host name.}
 
 \item{port}{Integer value, the port applied for database connection.}
-
-\item{user}{Character value indicating the database user in PostgreSQL.}
-
-\item{password}{Character value, the user's password in PostgreSQL.}
 
 \item{filepath}{Character value indicating the path to the folder, where the
 backup file will be restored. It have to be a path relative to the
