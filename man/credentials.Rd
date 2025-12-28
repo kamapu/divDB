@@ -4,9 +4,13 @@
 \alias{credentials}
 \title{Prompt for credentials}
 \usage{
-credentials(user = "", password = "")
+credentials(dbname = "", user = "", password = "")
 }
 \arguments{
+\item{dbname}{A character value with the name of the database to be
+connected. This will be used as 'service' by
+\code{\link[keyring:key_get]{keyring::key_set_with_value()}}.}
+
 \item{user}{A character value with the name of the user. It is optional to
 add it straight in the call of the function.}
 

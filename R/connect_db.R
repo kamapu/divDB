@@ -35,7 +35,7 @@
 connect_db <- function(dbname = "", host = "localhost", port = "5432",
                        user = "", password = "", pkg = "RPostgreSQL", ...) {
   # Get credentials (only if not provided)
-  if (user == "" | password == "") {
+  if (user == "" || password == "") {
     cred <- credentials(user = user, password = password)
     user <- unname(cred["user"])
     password <- unname(cred["password"])

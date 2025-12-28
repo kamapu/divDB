@@ -52,7 +52,7 @@ add_columns_sql <- function(df, name) {
       )
     )
   }
-  return(as(query, "sql"))
+  as(query, "sql")
 }
 
 #' @rdname add_columns_sql
@@ -70,7 +70,7 @@ insert_rows_sql <- function(df, name) {
     paste0(names(df), collapse = "\",\""), "\")\nvalues\n",
     paste0(query_values, collapse = ",\n"), ";"
   )
-  return(as(query, "sql"))
+  as(query, "sql")
 }
 
 #' @rdname  add_columns_sql
@@ -105,5 +105,5 @@ delete_rows_sql <- function(x, name, key) {
       collapse = ","
     ), ")")
   )
-  return(as(query, "sql"))
+  as(query, "sql")
 }

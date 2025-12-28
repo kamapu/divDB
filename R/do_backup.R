@@ -47,7 +47,7 @@ do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
                       fext = ".backup", path_psql = "/usr/bin",
                       f_timestamp = "%Y%m%d", ...) {
   # Get credentials (only if not provided)
-  if (user == "" | password == "") {
+  if (user == "" || password == "") {
     cred <- credentials(user = user, password = password)
     user <- unname(cred["user"])
     password <- unname(cred["password"])
@@ -88,7 +88,7 @@ do_restore <- function(dbname = "", backup, host = "localhost", port = "5432",
                        path_psql = "/usr/bin", f_timestamp = "%Y%m%d",
                        opts = "--clean", ...) {
   # Get credentials (only if not provided)
-  if (user == "" | password == "") {
+  if (user == "" || password == "") {
     cred <- credentials(user = user, password = password)
     user <- unname(cred["user"])
     password <- unname(cred["password"])

@@ -29,7 +29,7 @@ reshape_updated <- function(comp, key) {
     )
     names(Ref)[names(Ref) == "idx"] <- key
   }
-  return(Ref)
+  Ref
 }
 
 #' @name update_data
@@ -98,7 +98,7 @@ setMethod(
       )
     }
     if (all(!c(add, delete, update))) {
-      return(Comp_obj)
+      Comp_obj
     } else {
       query <- new_sql()
       # Use insert rows
@@ -115,7 +115,7 @@ setMethod(
         ref_tab <- reshape_updated(Comp_obj, key)
         ref_tab$new_vals <- do_character(ref_tab$new_vals)
         ref_tab[[key]] <- do_character(ref_tab[[key]])
-        for (i in 1:nrow(ref_tab)) {
+        for (i in seq_len(nrow(ref_tab))) {
           query <- c(query, paste(
             paste0(
               "update \"",

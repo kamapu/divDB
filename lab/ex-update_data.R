@@ -19,7 +19,7 @@ names(iris_df) <- taxlist::replace_x(x = names(iris_df),
         "Species"),
     new = c("sepal_length", "sepal_width", "petal_length", "petal_width",
         "species"))
-iris_df$id <- 1:nrow(iris_df)
+iris_df$id <- seq_len(nrow(iris_df))
 
 # Connect data frame and create empty table
 conn <- connect_db("test-db")
@@ -36,7 +36,7 @@ insert_rows(conn, iris_df, c("data_frames", "iris"))
 
 # Data frame for comparison
 set.seed(42)
-reviewed_df <- iris_df[sample(1:nrow(iris_df), 15), ]
+reviewed_df <- iris_df[sample(seq_len(nrow(iris_df)), 15), ]
 
 reviewed_df$sepal_length[1] <- 100
 reviewed_df$petal_width[3] <- 100
