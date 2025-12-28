@@ -1,5 +1,6 @@
 library(devtools)
 library(styler)
+library(lintr)
 
 # Clean session
 rm(list = ls())
@@ -20,6 +21,14 @@ document()
 # Build and check package
 pkg_loc <- build(path = "build-pkg", args = "--resave-data")
 check_built(path = pkg_loc)
+
+# Additions
+
+# lint
+lint_dir(path = "R")
+
+# coverage
+
 
 # Post-Test --------------------------------------------------------------------
 

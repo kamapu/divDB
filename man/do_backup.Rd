@@ -6,26 +6,24 @@
 \title{Create a backup by 'pg_dump' and restore database}
 \usage{
 do_backup(
-  dbname = "",
+  dbname,
+  user,
   host = "localhost",
   port = "5432",
-  user = "",
-  password = "",
   filepath = ".",
   filename = dbname,
+  f_timestamp = "\%Y\%m\%d",
   fext = ".backup",
   path_psql = "/usr/bin",
-  f_timestamp = "\%Y\%m\%d",
   ...
 )
 
 do_restore(
-  dbname = "",
+  dbname,
+  user,
   backup,
   host = "localhost",
   port = "5432",
-  user = "",
-  password = "",
   filepath = ".",
   filename = dbname,
   fext = ".backup",
@@ -36,16 +34,12 @@ do_restore(
 )
 }
 \arguments{
-\item{dbname}{Character value indicating the name of the target PostgreSQL
-database.}
+\item{dbname, user}{Character value indicating the name of the target
+PostgreSQL database and user.}
 
 \item{host}{Character value, the host name.}
 
 \item{port}{Integer value, the port applied for database connection.}
-
-\item{user}{Character value indicating the database user in PostgreSQL.}
-
-\item{password}{Character value, the user's password in PostgreSQL.}
 
 \item{filepath}{Character value indicating the path to the folder, where the
 backup file will be restored. It have to be a path relative to the
@@ -55,15 +49,16 @@ working directory.}
 the function guess the database's name and a time stamp, where the newest
 backup, if many in the same folder, will be used.}
 
+\item{f_timestamp}{Character value indicating the format of the timestamp
+applied to the backup's name (passed as format to \code{\link[=strptime]{strptime()}}). It can
+be cancelled by 'f_timestamp = NULL', then backups may be overwritten.}
+
 \item{fext}{Character value indicating the extension used for the backup
 file, including the leading dot. The extension ".backup" is used by
 default.}
 
 \item{path_psql}{Character value indicating the system path to PostgreSQL
 binaries.}
-
-\item{f_timestamp}{Character value indicating the format of the timestamp
-applied to the backup's name (see \code{\link[=strptime]{strptime()}}).}
 
 \item{...}{Further arguments passed to \code{\link[=system]{system()}}.}
 

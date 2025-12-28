@@ -1,4 +1,4 @@
-# divDB 0.2
+# divDB 0.1.8 
 
 ## New features
 
@@ -8,6 +8,13 @@
   `as(x, "sql")`.
 - A series of functions writing sql statements independent of a database
   connection.
+- New function `delete_credentials()` to unset stored credentials.
+
+## Improvements
+
+- Function `credentials()` is using package **keyring**.
+- Timestamps in backups written by `do_backup()` can be suppressed by setting
+  `f_timestamp = FALSE`. 
 
 ## Bug fixes
 

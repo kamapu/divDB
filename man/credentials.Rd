@@ -2,16 +2,23 @@
 % Please edit documentation in R/credentials.R
 \name{credentials}
 \alias{credentials}
+\alias{delete_credentials}
 \title{Prompt for credentials}
 \usage{
-credentials(user = "", password = "")
+credentials(dbname = "", user = "", password = "")
+
+delete_credentials(dbname, user)
 }
 \arguments{
+\item{dbname}{A character value with the name of the database to be
+connected. This will be used as 'service' by
+\code{\link[keyring:key_get]{keyring::key_set_with_value()}}.}
+
 \item{user}{A character value with the name of the user. It is optional to
 add it straight in the call of the function.}
 
-\item{password}{A character value with the password. It is recommended to add
-it manually in the prompt.}
+\item{password}{A character value with the password. It is recommended to set
+it in the prompt and not in the script.}
 }
 \value{
 A named vector with two elements, \strong{user} and \strong{password}.
@@ -20,9 +27,11 @@ A named vector with two elements, \strong{user} and \strong{password}.
 Prompt for credentials
 }
 \details{
-A wizard that asks for credentials (username and password).
+A wizard that asks for credentials (database name, username and password).
 This is to avoid writing passwords in the scripts.
-The credentials are then passed to other functions that require them.
+
+Credentials can be retrieved by \code{\link[keyring:key_get]{keyring::key_get()}} or deleted using
+\code{\link[=delete_credentials]{delete_credentials()}}.
 }
 \author{
 Miguel Alvarez
