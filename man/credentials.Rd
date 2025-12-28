@@ -7,7 +7,7 @@
 \usage{
 credentials(dbname = "", user = "", password = "")
 
-delete_credentials(dbname)
+delete_credentials(dbname, user)
 }
 \arguments{
 \item{dbname}{A character value with the name of the database to be
@@ -17,8 +17,8 @@ connected. This will be used as 'service' by
 \item{user}{A character value with the name of the user. It is optional to
 add it straight in the call of the function.}
 
-\item{password}{A character value with the password. It is recommended to add
-it manually in the prompt.}
+\item{password}{A character value with the password. It is recommended to set
+it in the prompt and not in the script.}
 }
 \value{
 A named vector with two elements, \strong{user} and \strong{password}.

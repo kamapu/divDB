@@ -15,8 +15,8 @@
 #'     [keyring::key_set_with_value()].
 #' @param user A character value with the name of the user. It is optional to
 #'     add it straight in the call of the function.
-#' @param password A character value with the password. It is recommended to add
-#'     it manually in the prompt.
+#' @param password A character value with the password. It is recommended to set
+#'     it in the prompt and not in the script.
 #'
 #' @return
 #' A named vector with two elements, **user** and **password**.
@@ -69,7 +69,6 @@ credentials <- function(dbname = "", user = "", password = "") {
 #' @rdname credentials
 #' @aliases delete_credentials
 #' @export
-delete_credentials <- function(dbname) {
-  username <- keyring::key_list(service = dbname)$username
-  keyring::key_delete(service = dbname, username = username)
+delete_credentials <- function(dbname, user) {
+  keyring::key_delete(service = dbname, username = user)
 }

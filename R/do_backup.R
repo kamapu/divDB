@@ -48,9 +48,15 @@ do_backup <- function(dbname = "", host = "localhost", port = "5432", user = "",
                       f_timestamp = "%Y%m%d", ...) {
   # Get credentials (only if not provided)
   if (user == "" || password == "") {
-    cred <- credentials(user = user, password = password)
-    user <- unname(cred["user"])
-    password <- unname(cred["password"])
+    cred <- key_list(service = dbname)
+    if (!nrow(cred)) {
+      stop(paste0(
+        "There is no password in '", dbname,
+        "'\n  Use credentials() to set it."
+      ))
+    }
+    user <- cred$username
+    password <- keyring::key_get(service = dbname, username = user)
   }
   # Prepare the file
   old_file <- file.path(filepath, sub(fext, "", list.files(
@@ -89,9 +95,15 @@ do_restore <- function(dbname = "", backup, host = "localhost", port = "5432",
                        opts = "--clean", ...) {
   # Get credentials (only if not provided)
   if (user == "" || password == "") {
-    cred <- credentials(user = user, password = password)
-    user <- unname(cred["user"])
-    password <- unname(cred["password"])
+    cred <- key_list(service = dbname)
+    if (!nrow(cred)) {
+      stop(paste0(
+        "There is no password in '", dbname,
+        "'\n  Use credentials() to set it."
+      ))
+    }
+    user <- cred$username
+    password <- keyring::key_get(service = dbname, username = user)
   }
   # Create command
   if (missing(backup)) {

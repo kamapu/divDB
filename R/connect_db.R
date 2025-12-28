@@ -8,44 +8,36 @@
 #' database.
 #' Consequently `disconnect_db()` will be used to close the opened connection.
 #'
-#' @param dbname,host,port Character values passed to [DBI::dbConnect()].
-#' @param conn A connection of class [RPostgreSQL::PostgreSQLConnection-class]
-#'     or [RPostgres::PqConnection-class].
-#' @param user,password Character values. They are passed to [DBI::dbConnect()].
-#'     If not provided, they will be prompted by [credentials()].
+#' @param dbname,user Character values indicating the names of the database and
+#'     user. They are passed as service and username to [keyring::key_get()],
+#'     respectively. Note that you need to set the respective password in
+#'     advance by using [credentials()].
+#' @param host,port Character values passed to [DBI::dbConnect()].
 #' @param pkg A character value indicating the alternative package used to
 #'     establish the connection. At the moment only `RpostgreSQL` and
 #'     `RPostgres` are suitable.
+#' @param conn A connection of class [RPostgreSQL::PostgreSQLConnection-class]
+#'     or [RPostgres::PqConnection-class].
 #' @param ... Further arguments passed to [DBI::dbConnect()].
 #'
 #' @return
 #' A connection as [RPostgreSQL::PostgreSQLConnection-class] or
 #' [RPostgres::PqConnection-class], depending on the selected package.
 #'
-#' @references
-#' http://r.789695.n4.nabble.com/tkentry-that-exits-after-RETURN-tt854721.html#none
-#'
-#' https://gist.github.com/mages/2aed2a053e355e3bfe7c#file-getlogindetails-r
-#'
-#' Dalgaard (2001).
-#'
 #' @author Miguel Alvarez \email{kamapu@@posteo.com}
 #'
 #' @export
-connect_db <- function(dbname = "", host = "localhost", port = "5432",
-                       user = "", password = "", pkg = "RPostgreSQL", ...) {
-  # Get credentials (only if not provided)
-  if (user == "" || password == "") {
-    cred <- key_list(service = dbname)
-    if (!nrow(cred)) {
+connect_db <- function(dbname, user, host = "localhost", port = "5432",
+                       pkg = "RPostgreSQL", ...) {
+  # Get credentials or retrieve an error
+  password <- tryCatch(keyring::key_get(service = dbname, username = user),
+    error = function(e) {
       stop(paste0(
-        "There is no password in '", dbname,
-        "'\n  Use credentials() to set it."
+        "A password for database '", dbname, "' and user '", user,
+        "' is not yet set\n  Use credentials() to set it."
       ))
     }
-    user <- cred$username
-    password <- keyring::key_get(service = dbname, username = user)
-  }
+  )
   # Connection
   pkg_opts <- c("RPostgreSQL", "RPostgres")
   pkg <- pmatch(pkg, pkg_opts)
@@ -57,18 +49,18 @@ connect_db <- function(dbname = "", host = "localhost", port = "5432",
     ))
   }
   if (pkg == 1) {
-    DBI::dbConnect(
+    return(DBI::dbConnect(
       drv = "PostgreSQL", dbname = dbname, host = host,
       port = port, user = user, password = password,
       ...
-    )
+    ))
   }
   if (pkg == 2) {
-    DBI::dbConnect(
+    return(DBI::dbConnect(
       drv = Postgres(), dbname = dbname, host = host,
       port = port, user = user, password = password,
       ...
-    )
+    ))
   }
 }
 

@@ -10,11 +10,10 @@
 \title{Connect to PostgreSQL database}
 \usage{
 connect_db(
-  dbname = "",
+  dbname,
+  user,
   host = "localhost",
   port = "5432",
-  user = "",
-  password = "",
   pkg = "RPostgreSQL",
   ...
 )
@@ -26,10 +25,12 @@ disconnect_db(conn, ...)
 \method{disconnect_db}{PqConnection}(conn, ...)
 }
 \arguments{
-\item{dbname, host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+\item{dbname, user}{Character values indicating the names of the database and
+user. They are passed as service and username to \code{\link[keyring:key_get]{keyring::key_get()}},
+respectively. Note that you need to set the respective password in
+advance by using \code{\link[=credentials]{credentials()}}.}
 
-\item{user, password}{Character values. They are passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.
-If not provided, they will be prompted by \code{\link[=credentials]{credentials()}}.}
+\item{host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
 \item{pkg}{A character value indicating the alternative package used to
 establish the connection. At the moment only \code{RpostgreSQL} and
@@ -48,13 +49,6 @@ A connection as \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::Postg
 It opens a prompt to insert connection details to a PostgreSQL
 database.
 Consequently \code{disconnect_db()} will be used to close the opened connection.
-}
-\references{
-http://r.789695.n4.nabble.com/tkentry-that-exits-after-RETURN-tt854721.html#none
-
-https://gist.github.com/mages/2aed2a053e355e3bfe7c#file-getlogindetails-r
-
-Dalgaard (2001).
 }
 \author{
 Miguel Alvarez \email{kamapu@posteo.com}
