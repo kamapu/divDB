@@ -3,9 +3,18 @@
 # Author: Miguel Alvarez
 ################################################################################
 
+library(keyring)
 library(divDB)
 
-cred <- credentials()
+# Set credentials
+credentials(dbname = "iris-db", user = "miguel")
 
-cred["user"]
-cred["password"]
+key_list("iris-db")
+
+# Delete credentials
+delete_credentials(dbname = "iris-db")
+
+key_list("iris-db")
+
+# Non-existing credentials
+key_list("my-secrets")

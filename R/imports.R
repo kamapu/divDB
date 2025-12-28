@@ -1,7 +1,7 @@
 #' @importFrom biblio compare_df update_data
 #' @importFrom DBI dbConnect dbDisconnect dbExistsTable dbGetQuery dbReadTable
 #'     dbSendQuery
-#' @importFrom keyring set_key_with_value
+#' @importFrom keyring key_delete key_list set_key_with_value
 #' @importFrom methods as setMethod
 #' @importFrom RPostgres Postgres
 #' @importFrom taxlist insert_rows sort_backups

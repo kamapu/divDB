@@ -36,9 +36,15 @@ connect_db <- function(dbname = "", host = "localhost", port = "5432",
                        user = "", password = "", pkg = "RPostgreSQL", ...) {
   # Get credentials (only if not provided)
   if (user == "" || password == "") {
-    cred <- credentials(user = user, password = password)
-    user <- unname(cred["user"])
-    password <- unname(cred["password"])
+    cred <- key_list(service = dbname)
+    if (!nrow(cred)) {
+      stop(paste0(
+        "There is no password in '", dbname,
+        "'\n  Use credentials() to set it."
+      ))
+    }
+    user <- cred$username
+    password <- keyring::key_get(service = dbname, username = user)
   }
   # Connection
   pkg_opts <- c("RPostgreSQL", "RPostgres")
@@ -51,18 +57,18 @@ connect_db <- function(dbname = "", host = "localhost", port = "5432",
     ))
   }
   if (pkg == 1) {
-    return(dbConnect(
+    DBI::dbConnect(
       drv = "PostgreSQL", dbname = dbname, host = host,
       port = port, user = user, password = password,
       ...
-    ))
+    )
   }
   if (pkg == 2) {
-    return(dbConnect(
+    DBI::dbConnect(
       drv = Postgres(), dbname = dbname, host = host,
       port = port, user = user, password = password,
       ...
-    ))
+    )
   }
 }
 

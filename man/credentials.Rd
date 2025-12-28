@@ -2,9 +2,12 @@
 % Please edit documentation in R/credentials.R
 \name{credentials}
 \alias{credentials}
+\alias{delete_credentials}
 \title{Prompt for credentials}
 \usage{
 credentials(dbname = "", user = "", password = "")
+
+delete_credentials(dbname)
 }
 \arguments{
 \item{dbname}{A character value with the name of the database to be
@@ -24,9 +27,11 @@ A named vector with two elements, \strong{user} and \strong{password}.
 Prompt for credentials
 }
 \details{
-A wizard that asks for credentials (username and password).
+A wizard that asks for credentials (database name, username and password).
 This is to avoid writing passwords in the scripts.
-The credentials are then passed to other functions that require them.
+
+Credentials can be retrieved by \code{\link[keyring:key_get]{keyring::key_get()}} or deleted using
+\code{\link[=delete_credentials]{delete_credentials()}}.
 }
 \author{
 Miguel Alvarez

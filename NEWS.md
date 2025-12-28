@@ -8,6 +8,11 @@
   `as(x, "sql")`.
 - A series of functions writing sql statements independent of a database
   connection.
+- New function `delete_credentials()` to unset stored credentials.
+
+## Improvements
+
+- Function `credentials()` is using package **keyring**.
 
 ## Bug fixes
 

@@ -1,11 +1,14 @@
 #' @name credentials
+#' @rdname credentials
 #'
 #' @title Prompt for credentials
 #'
 #' @details
-#' A wizard that asks for credentials (username and password).
+#' A wizard that asks for credentials (database name, username and password).
 #' This is to avoid writing passwords in the scripts.
-#' The credentials are then passed to other functions that require them.
+#'
+#' Credentials can be retrieved by [keyring::key_get()] or deleted using
+#' [delete_credentials()].
 #'
 #' @param dbname A character value with the name of the database to be
 #'     connected. This will be used as 'service' by
@@ -61,4 +64,12 @@ credentials <- function(dbname = "", user = "", password = "") {
     service = tclvalue(DB), username = tclvalue(User),
     password = tclvalue(Password)
   )
+}
+
+#' @rdname credentials
+#' @aliases delete_credentials
+#' @export
+delete_credentials <- function(dbname) {
+  username <- keyring::key_list(service = dbname)$username
+  keyring::key_delete(service = dbname, username = username)
 }
