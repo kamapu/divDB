@@ -1,4 +1,4 @@
-# divDB 0.2
+# divDB 0.1.8 
 
 ## New features
 
@@ -13,6 +13,8 @@
 ## Improvements
 
 - Function `credentials()` is using package **keyring**.
+- Timestamps in backups written by `do_backup()` can be suppressed by setting
+  `f_timestamp = FALSE`. 
 
 ## Bug fixes
 
