@@ -9,6 +9,8 @@
 #' a character vector into `sql`.
 #' Alternatively you can use `as(x, "sql")`.
 #'
+#' There is also a `c()` method to connect multiple 'sql' objects.
+#'
 #' @param x A character vector to be converted to class `sql`.
 #'
 #' @example examples/sql-class.R
@@ -32,3 +34,17 @@ new_sql <- function(x) {
 setAs(from = "character", to = "sql", def = function(from) {
   return(new_sql(from))
 })
+
+#' @rdname sql-class
+#' @aliases c c,sql-method
+#'
+#' @param ... Objects of class 'sql' to be concatenated.
+#' @param recursive Logical. Passed to [c()].
+#'
+#' @method c sql
+#' @export
+c.sql <- function(..., recursive = FALSE) {
+  res <- NextMethod()
+  class(res) <- c("sql", "character")
+  res
+}

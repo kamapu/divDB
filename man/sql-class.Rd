@@ -5,12 +5,21 @@
 \alias{new_sql}
 \alias{as}
 \alias{coerce,character,sql-method}
+\alias{c.sql}
+\alias{c}
+\alias{c,sql-method}
 \title{A class for lists of SQL commands}
 \usage{
 new_sql(x)
+
+\method{c}{sql}(..., recursive = FALSE)
 }
 \arguments{
 \item{x}{A character vector to be converted to class \code{sql}.}
+
+\item{...}{Objects of class 'sql' to be concatenated.}
+
+\item{recursive}{Logical. Passed to \code{\link[=c]{c()}}.}
 }
 \description{
 Multiple SQL commands can be read from a *.sql file by \code{\link[=read_sql]{read_sql()}} and
@@ -19,6 +28,8 @@ stored as a character vector.
 \code{new_sql()} can be used either to retrieves an empty object or to coerce
 a character vector into \code{sql}.
 Alternatively you can use \code{as(x, "sql")}.
+
+There is also a \code{c()} method to connect multiple 'sql' objects.
 }
 \examples{
 ## Write a SQL command as text
