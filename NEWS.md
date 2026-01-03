@@ -1,3 +1,9 @@
+# divDB 0.1.10
+
+### Bug fixes
+
+- f_stamp in `do_backup()` was passed to `Sys.Date()` instead of `Sys.time()`.
+
 # divDB 0.1.9
 
 ### New features

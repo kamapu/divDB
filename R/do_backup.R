@@ -62,7 +62,7 @@ do_backup <- function(dbname, user, host = "localhost", port = "5432",
       pattern = filename
     )))
     new_file <- file.path(filepath, paste0(filename, "_", format(
-      Sys.Date(),
+      Sys.time(),
       f_timestamp
     )))
     if (length(old_file) > 0) {
