@@ -1,3 +1,10 @@
+# divDB 0.1.11
+
+### Bug fixes
+
+- `do_character()` now applies to **POSIX\*** classes.
+
+
 # divDB 0.1.10
 
 ### Bug fixes
