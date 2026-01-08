@@ -12,6 +12,10 @@
 \alias{do_character,logical-method}
 \alias{do_character.Date}
 \alias{do_character,Date-method}
+\alias{do_character.POSIXct}
+\alias{do_character,POSIXct-method}
+\alias{do_character.POSIXlt}
+\alias{do_character,POSIXlt-method}
 \alias{do_character.data.frame}
 \alias{do_character,data.frame-method}
 \title{Convert vectors to characters for building queries}
@@ -28,12 +32,19 @@ do_character(x, ...)
 
 \method{do_character}{Date}(x, ...)
 
+\method{do_character}{POSIXct}(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", ...)
+
+\method{do_character}{POSIXlt}(x, format = "\%Y-\%m-\%d \%H:\%M:\%S", ...)
+
 \method{do_character}{data.frame}(x, ...)
 }
 \arguments{
 \item{x}{A vector or data frame to be converted.}
 
 \item{...}{Further arguments passed among methods.}
+
+\item{format}{A character value indicating the format used to transform time
+classes.}
 }
 \description{
 To make it easier to build queries, variables and data frames are converted

@@ -8,6 +8,8 @@
 #' to character values.
 #'
 #' @param x A vector or data frame to be converted.
+#' @param format A character value indicating the format used to transform time
+#'     classes.
 #' @param ... Further arguments passed among methods.
 #'
 #' @example examples/do_character.R
@@ -16,6 +18,7 @@
 do_character <- function(x, ...) {
   UseMethod("do_character", x)
 }
+
 
 #' @rdname do_character
 #' @aliases do_character,character-method
@@ -29,6 +32,7 @@ do_character.character <- function(x, ...) {
   return(x)
 }
 
+
 #' @rdname do_character
 #' @aliases do_character,numeric-method
 #' @method do_character numeric
@@ -39,6 +43,7 @@ do_character.numeric <- function(x, ...) {
   return(x)
 }
 
+
 #' @rdname do_character
 #' @aliases do_character,factor-method
 #' @method do_character factor
@@ -48,6 +53,7 @@ do_character.factor <- function(x, ...) {
   x <- do_character(x)
   return(x)
 }
+
 
 #' @rdname do_character
 #' @aliases do_character,logical-method
@@ -60,6 +66,7 @@ do_character.logical <- function(x, ...) {
   return(x)
 }
 
+
 #' @rdname do_character
 #' @aliases do_character,Date-method
 #' @method do_character Date
@@ -70,7 +77,30 @@ do_character.Date <- function(x, ...) {
   return(x)
 }
 
+
+#' @rdname do_character
+#' @aliases do_character,POSIXct-method
+#' @method do_character POSIXct
+#' @export
+do_character.POSIXct <- function(x, format = "%Y-%m-%d %H:%M:%S", ...) {
+  x <- format(x, format = format)
+  do_character(x)
+}
+
+
+#' @rdname do_character
+#' @aliases do_character,POSIXlt-method
+#' @method do_character POSIXlt
+#' @export
+do_character.POSIXlt <- function(x, format = "%Y-%m-%d %H:%M:%S", ...) {
+  x <- format(x, format = format)
+  do_character(x)
+}
+
+
 # TODO: Further classes (e.g. geometries)
+
+# For all variables in a data frame --------------------------------------------
 
 #' @rdname do_character
 #' @aliases do_character,data.frame-method
