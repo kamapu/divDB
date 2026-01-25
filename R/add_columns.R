@@ -7,7 +7,9 @@
 #' For convenience new columns can be listed in a data frame including type
 #' and comments.
 #'
-#' @param conn A [RPostgreSQL::PostgreSQLConnection-class] connection to a database.
+#' @param conn A [RPostgreSQL::PostgreSQLConnection-class] or
+#'     a [RPostgres::PqConnection-class] connection to a database. If missing,
+#'     the function will call internally [connect_db()].
 #' @param df A data frame with definitions for new columns. The mandatory
 #'     columns are **name**, **type** (the type of new columns, including
 #'     constraints), and **comment** (comments added to the columns).
@@ -16,7 +18,8 @@
 #' @param eval A logical value, whether the resulting SQL commands should be
 #'     executed or not. This may be usefull if the target is retrieving SQL
 #'     scripts for further execution.
-#' @param ... Further arguments passed among methods.
+#' @param dbname,user A character value passed to [connect_db()].
+#' @param ... Further arguments passed to [connect_db()] or further methods.
 #'
 #' @return
 #' An invisible [sql-class] object.
@@ -68,4 +71,15 @@ add_columns.PostgreSQLConnection <- function(conn, df, name, eval = TRUE, ...) {
   }
   # Return invisible sql
   invisible(query)
+}
+
+#' @rdname add_columns
+#' @aliases add_columns,missing-method
+#' @method add_columns missing
+#' @export
+add_columns.missing <- function(conn, df, name, eval = TRUE,
+                                dbname, user, ...) {
+  conn <- connect_db(dbname = dbname, user = user, ...)
+  on.exit(disconnect_db(conn), add = TRUE)
+  add_columns(conn = conn, df = df, name = name, eval = eval, ...)
 }

@@ -9,9 +9,10 @@
 #' Consequently `disconnect_db()` will be used to close the opened connection.
 #'
 #' @param dbname,user Character values indicating the names of the database and
-#'     user. They are passed as service and username to [keyring::key_get()],
-#'     respectively. Note that you need to set the respective password in
-#'     advance by using [credentials()].
+#'     user.
+#' @param password Character value, the password. If not provided, it will
+#'     requested by [keyring::key_get()]. If this is the case, you need to set
+#'     the respective password using [credentials()].
 #' @param host,port Character values passed to [DBI::dbConnect()].
 #' @param pkg A character value indicating the alternative package used to
 #'     establish the connection. At the moment only `RpostgreSQL` and
@@ -27,17 +28,19 @@
 #' @author Miguel Alvarez \email{kamapu@@posteo.com}
 #'
 #' @export
-connect_db <- function(dbname, user, host = "localhost", port = "5432",
+connect_db <- function(dbname, user, password, host = "localhost", port = "5432",
                        pkg = "RPostgreSQL", ...) {
-  # Get credentials or retrieve an error
-  password <- tryCatch(keyring::key_get(service = dbname, username = user),
-    error = function(e) {
-      stop(paste0(
-        "A password for database '", dbname, "' and user '", user,
-        "' is not yet set\n  Use credentials() to set it."
-      ))
-    }
-  )
+  # Get credentials or retrieve an error (only if password is not provided)
+  if (missing(password)) {
+    password <- tryCatch(keyring::key_get(service = dbname, username = user),
+      error = function(e) {
+        stop(paste0(
+          "A password for database '", dbname, "' and user '", user,
+          "' is not yet set\n  Use credentials() to set it."
+        ))
+      }
+    )
+  }
   # Connection
   pkg_opts <- c("RPostgreSQL", "RPostgres")
   pkg <- pmatch(pkg, pkg_opts)

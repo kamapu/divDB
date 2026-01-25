@@ -1,3 +1,16 @@
+# divDB 0.2.0
+
+### New features
+
+- Functions `do_backup()` and `do_restore()` have a new argument **password**
+  to override keyring request.
+
+### Improvements
+
+- `credentials()` may not show a popup window when all parameters (dbname, user
+  and password) are explicitly provided in the function's call.
+- Function `add_columns()` will alternativelly use keyring or a connection.
+
 # divDB 0.1.11
 
 ### Bug fixes

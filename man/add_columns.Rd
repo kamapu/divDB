@@ -4,16 +4,22 @@
 \alias{add_columns}
 \alias{add_columns.PostgreSQLConnection}
 \alias{add_columns,PostgreSQLConnection-method}
+\alias{add_columns.missing}
+\alias{add_columns,missing-method}
 \title{Add columns to an existing table in database}
 \usage{
 add_columns(conn, ...)
 
 \method{add_columns}{PostgreSQLConnection}(conn, df, name, eval = TRUE, ...)
+
+\method{add_columns}{missing}(conn, df, name, eval = TRUE, dbname, user, ...)
 }
 \arguments{
-\item{conn}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} connection to a database.}
+\item{conn}{A \link[RPostgreSQL:PostgreSQLConnection-class]{RPostgreSQL::PostgreSQLConnection} or
+a \link[RPostgres:PqConnection-class]{RPostgres::PqConnection} connection to a database. If missing,
+the function will call internally \code{\link[=connect_db]{connect_db()}}.}
 
-\item{...}{Further arguments passed among methods.}
+\item{...}{Further arguments passed to \code{\link[=connect_db]{connect_db()}} or further methods.}
 
 \item{df}{A data frame with definitions for new columns. The mandatory
 columns are \strong{name}, \strong{type} (the type of new columns, including
@@ -25,6 +31,8 @@ where the new columns have to be added.}
 \item{eval}{A logical value, whether the resulting SQL commands should be
 executed or not. This may be usefull if the target is retrieving SQL
 scripts for further execution.}
+
+\item{dbname, user}{A character value passed to \code{\link[=connect_db]{connect_db()}}.}
 }
 \value{
 An invisible \linkS4class{sql} object.

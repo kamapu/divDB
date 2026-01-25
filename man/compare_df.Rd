@@ -3,10 +3,13 @@
 \name{compare_df}
 \alias{compare_df}
 \alias{compare_df,PostgreSQLConnection,data.frame,character-method}
+\alias{compare_df,PqConnection,data.frame,character-method}
 \alias{compare_df,list,list,list-method}
 \title{Compare database tables with data frames}
 \usage{
 \S4method{compare_df}{PostgreSQLConnection,data.frame,character}(x, y, key, name, ...)
+
+\S4method{compare_df}{PqConnection,data.frame,character}(x, y, key, name, ...)
 
 \S4method{compare_df}{list,list,list}(x, y, key, ...)
 }
