@@ -12,6 +12,7 @@
 connect_db(
   dbname,
   user,
+  password,
   host = "localhost",
   port = "5432",
   pkg = "RPostgreSQL",
@@ -26,9 +27,11 @@ disconnect_db(conn, ...)
 }
 \arguments{
 \item{dbname, user}{Character values indicating the names of the database and
-user. They are passed as service and username to \code{\link[keyring:key_get]{keyring::key_get()}},
-respectively. Note that you need to set the respective password in
-advance by using \code{\link[=credentials]{credentials()}}.}
+user.}
+
+\item{password}{Character value, the password. If not provided, it will
+requested by \code{\link[keyring:key_get]{keyring::key_get()}}. If this is the case, you need to set
+the respective password using \code{\link[=credentials]{credentials()}}.}
 
 \item{host, port}{Character values passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 

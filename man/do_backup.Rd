@@ -8,6 +8,7 @@
 do_backup(
   dbname,
   user,
+  password,
   host = "localhost",
   port = "5432",
   filepath = ".",
@@ -22,6 +23,7 @@ do_restore(
   dbname,
   user,
   backup,
+  password,
   host = "localhost",
   port = "5432",
   filepath = ".",
@@ -36,6 +38,9 @@ do_restore(
 \arguments{
 \item{dbname, user}{Character value indicating the name of the target
 PostgreSQL database and user.}
+
+\item{password}{A character value, the password. If not provided, it will
+be queried by \code{\link[keyring:key_get]{keyring::key_get()}}.}
 
 \item{host}{Character value, the host name.}
 

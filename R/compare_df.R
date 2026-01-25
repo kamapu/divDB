@@ -31,8 +31,23 @@ setMethod(
     if (!dbExistsTable(x, name)) {
       stop("The reference table does not exist in the database.")
     }
-    x <- dbReadTable(conn = x, name = name)
-    return(compare_df(x = x, y = y, key = key, ...))
+    x <- DBI::dbReadTable(conn = x, name = name)
+    return(biblio::compare_df(x = x, y = y, key = key, ...))
+  }
+)
+
+#' @rdname compare_df
+#' @aliases compare_df,PqConnection,data.frame,character-method
+setMethod(
+  "compare_df", signature(
+    x = "PqConnection", y = "data.frame", key = "character"
+  ),
+  function(x, y, key, name, ...) {
+    if (!dbExistsTable(x, name)) {
+      stop("The reference table does not exist in the database.")
+    }
+    x <- DBI::dbReadTable(conn = x, name = name)
+    return(biblio::compare_df(x = x, y = y, key = key, ...))
   }
 )
 
@@ -58,7 +73,7 @@ setMethod(
           "'"
         ))
       } else {
-        OUT[[i]] <- compare_df(x = x[[i]], y = y[[i]], key = key[[i]])
+        OUT[[i]] <- biblio::compare_df(x = x[[i]], y = y[[i]], key = key[[i]])
       }
     }
     class(OUT) <- c("comp_list", "list")

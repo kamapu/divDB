@@ -1,5 +1,5 @@
 Package: divDB
-Version: 0.1.11
+Version: 0.2.0
 Encoding: UTF-8
 Title: Connecting and Managing taxlist/vegtable Databases
 Authors@R:

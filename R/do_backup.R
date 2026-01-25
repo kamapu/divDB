@@ -16,6 +16,8 @@
 #'
 #' @param dbname,user Character value indicating the name of the target
 #'     PostgreSQL database and user.
+#' @param password A character value, the password. If not provided, it will
+#'     be queried by [keyring::key_get()].
 #' @param filename Character value, the name of the backup file. If not provided,
 #'     the function guess the database's name and a time stamp, where the newest
 #'     backup, if many in the same folder, will be used.
@@ -41,18 +43,20 @@
 #' @author Miguel Alvarez
 #'
 #' @export
-do_backup <- function(dbname, user, host = "localhost", port = "5432",
+do_backup <- function(dbname, user, password, host = "localhost", port = "5432",
                       filepath = ".", filename = dbname, f_timestamp = "%Y%m%d",
                       fext = ".backup", path_psql = "/usr/bin", ...) {
-  # Get credentials or retrieve an error
-  password <- tryCatch(keyring::key_get(service = dbname, username = user),
-    error = function(e) {
-      stop(paste0(
-        "A password for database '", dbname, "' and user '", user,
-        "' is not yet set\n  Use credentials() to set it."
-      ))
-    }
-  )
+  # Get credentials or retrieve an error (only if missing)
+  if (missing(password)) {
+    password <- tryCatch(keyring::key_get(service = dbname, username = user),
+      error = function(e) {
+        stop(paste0(
+          "A password for database '", dbname, "' and user '", user,
+          "' is not yet set\n  Use credentials() to set it."
+        ))
+      }
+    )
+  }
   if (is.null(f_timestamp)) {
     message("Timestamp set to NULL. Previous backups may be overwritten.")
     new_file <- file.path(filepath, paste0(filename, fext))
@@ -87,19 +91,20 @@ do_backup <- function(dbname, user, host = "localhost", port = "5432",
 #' @rdname do_backup
 #' @aliases do_restore
 #' @export
-do_restore <- function(dbname, user, backup, host = "localhost", port = "5432",
-                       filepath = ".", filename = dbname, fext = ".backup",
-                       path_psql = "/usr/bin", f_timestamp = "%Y%m%d",
-                       opts = "--clean", ...) {
-  # Get credentials or retrieve an error
-  password <- tryCatch(keyring::key_get(service = dbname, username = user),
-    error = function(e) {
-      stop(paste0(
-        "A password for database '", dbname, "' and user '", user,
-        "' is not yet set\n  Use credentials() to set it."
-      ))
-    }
-  )
+do_restore <- function(dbname, user, backup, password, host = "localhost",
+                       port = "5432", filepath = ".", filename = dbname, fext = ".backup",
+                       path_psql = "/usr/bin", f_timestamp = "%Y%m%d", opts = "--clean", ...) {
+  # Get credentials or retrieve an error (if password missing)#
+  if (missing(password)) {
+    password <- tryCatch(keyring::key_get(service = dbname, username = user),
+      error = function(e) {
+        stop(paste0(
+          "A password for database '", dbname, "' and user '", user,
+          "' is not yet set\n  Use credentials() to set it."
+        ))
+      }
+    )
+  }
   # Create command
   if (missing(backup)) {
     backup <- taxlist::sort_backups(
